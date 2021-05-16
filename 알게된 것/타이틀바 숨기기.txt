@@ -1,0 +1,5 @@
+출처: https://lakue.tistory.com/48
+
+onCreate 안에
+ActionBar actionBar = getSupportActionBar();
+actionBar.hide();
