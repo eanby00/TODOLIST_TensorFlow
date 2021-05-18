@@ -1,2 +1,4 @@
 2021-05-16: 커스텀 달력 적용 및 수정
 커스텀 달력 출처: https://github.com/ahmed-alamir/CalendarView
+
+2021-05-18: 메인 페이지 디자인 변경
