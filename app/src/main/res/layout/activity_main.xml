@@ -5,13 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="5dp"
+    android:background="#EFEFF1"
     tools:context=".MainActivity" >
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
 
     <com.todo.todolist.CustomCalendarView
         xmlns:calendarNS="http://schemas.android.com/apk/res/com.todo.todolist"
@@ -19,4 +15,110 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         calendarNS:dateFormat="MMMM yyyy"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="계획 난이도 기준"
+        android:padding="5dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/difEasy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:background="#A3B6C5"
+            android:textColor="@color/black"
+            android:text="33"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:padding="5dp"/>
+        <TextView
+            android:id="@+id/difNormal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.34"
+            android:background="#D5E1DF"
+            android:textColor="@color/black"
+            android:text="67"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:padding="5dp"/>
+        <TextView
+            android:id="@+id/difHard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:background="#E2B3A3"
+            android:textColor="@color/black"
+            android:text="100"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="계획 달성률 기준"
+        android:padding="5dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/achLow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:background="#B97687"
+            android:textColor="@color/black"
+            android:text="33"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/achNormal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.34"
+            android:background="#C7D6DB"
+            android:textColor="@color/black"
+            android:text="67"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/achHigh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:background="#6ECEDA"
+            android:textColor="@color/black"
+            android:text="100"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:padding="5dp"/>
+
+    </LinearLayout>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +136,9 @@ public class CustomCalendarView extends LinearLayout
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (eventHandler != null) {
-                    eventHandler.onDayPress((Date)parent.getItemAtPosition(position));
+                    Date select = (Date) parent.getItemAtPosition(position);
+                    String key = (select.getYear()+1900)+"_"+(select.getMonth()+1)+"_"+select.getDate();
+                    eventHandler.onDayPress(key);
                 }
             }
         });
@@ -175,8 +178,7 @@ public class CustomCalendarView extends LinearLayout
         grid.setAdapter(new CalendarAdapter(getContext(), cells, events));
 
         // update title
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-        txtDate.setText(sdf.format(currentDate.getTime()));
+        txtDate.setText(currentDate.get(Calendar.YEAR)+"년 "+(currentDate.get(Calendar.MONTH)+1)+"월");
     }
 
 
@@ -188,16 +190,14 @@ public class CustomCalendarView extends LinearLayout
         // for view inflation
         private LayoutInflater inflater;
 
-        public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays)
-        {
+        public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays) {
             super(context, R.layout.control_calendar_day, days);
             this.eventDays = eventDays;
             inflater = LayoutInflater.from(context);
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent)
-        {
+        public View getView(int position, View view, ViewGroup parent) {
             // day in question
             Date date = getItem(position);
             int day = date.getDate();
@@ -249,6 +249,6 @@ public class CustomCalendarView extends LinearLayout
      */
     public interface EventHandler
     {
-        void onDayPress(Date date);
+        void onDayPress(String key);
     }
 }
