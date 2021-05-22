@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         mainCal.setEventHandler(new CustomCalendarView.EventHandler() {
             @Override
             public void onDayPress(String key) {
-                Toast.makeText(MainActivity.this, key, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ToDoDate.class);
+                intent.putExtra("Date", key);
+                startActivity(intent);
             }
         });
 
@@ -57,28 +60,13 @@ public class MainActivity extends AppCompatActivity {
         difNormal = (TextView) findViewById(R.id.difNormal);
         difHard = (TextView) findViewById(R.id.difHard);
 
-        dif_easy = 50;
-        dif_normal = 120;
-        dif_hard = 200;
+        dif_easy = 33;
+        dif_normal = 67;
+        dif_hard = 100;
 
         difEasy.setText(Float.toString(dif_easy));
         difNormal.setText(Float.toString(dif_normal));
         difHard.setText(Float.toString(dif_hard));
-
-        LinearLayout.LayoutParams difEasyParams = (LinearLayout.LayoutParams) difEasy.getLayoutParams();
-        difEasyParams.weight = dif_easy / dif_hard;
-        Log.d("test", difEasyParams.weight+"");
-        difEasy.setLayoutParams(difEasyParams);
-
-        LinearLayout.LayoutParams difNormalParams = (LinearLayout.LayoutParams) difNormal.getLayoutParams();
-        difNormalParams.weight = (dif_normal - dif_easy) / dif_hard;
-        Log.d("test", difNormalParams.weight+"");
-        difNormal.setLayoutParams(difNormalParams);
-
-        LinearLayout.LayoutParams difHardParams = (LinearLayout.LayoutParams) difHard.getLayoutParams();
-        difHardParams.weight = (dif_hard - dif_normal) / dif_hard;
-        Log.d("test", difHardParams.weight+"");
-        difHard.setLayoutParams(difHardParams);
 
 
         // 계획 달성률 기준 설정
@@ -87,27 +75,12 @@ public class MainActivity extends AppCompatActivity {
         achNormal = (TextView) findViewById(R.id.achNormal);
         achHigh = (TextView) findViewById(R.id.achHigh);
 
-        ach_low = 10;
-        ach_normal = 120;
-        ach_high = 180;
+        ach_low = 33;
+        ach_normal = 67;
+        ach_high = 100;
 
         achLow.setText(Float.toString(ach_low));
         achNormal.setText(Float.toString(ach_normal));
         achHigh.setText(Float.toString(ach_high));
-
-        LinearLayout.LayoutParams achLowParams = (LinearLayout.LayoutParams) achLow.getLayoutParams();
-        achLowParams.weight = ach_low / ach_high;
-        Log.d("test", (achLowParams.weight == 0.055555556f)+"");
-        achLow.setLayoutParams(achLowParams);
-
-        LinearLayout.LayoutParams achNormalParams = (LinearLayout.LayoutParams) achNormal.getLayoutParams();
-        achNormalParams.weight = (ach_normal - ach_low) / ach_high;
-        Log.d("test", achNormalParams.weight+"");
-        achNormal.setLayoutParams(achNormalParams);
-
-        LinearLayout.LayoutParams achHighParams = (LinearLayout.LayoutParams) achHigh.getLayoutParams();
-        achHighParams.weight = (ach_high - ach_normal) / ach_high;
-        Log.d("test", achHighParams.weight+"");
-        achHigh.setLayoutParams(achHighParams);
     }
 }

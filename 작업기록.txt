@@ -2,3 +2,6 @@
 커스텀 달력 출처: https://github.com/ahmed-alamir/CalendarView
 
 2021-05-18: 메인 페이지 디자인 변경
+
+2021-05-23: 메인 페이지 디자인 변경
+            ToDoItem 페이지 생성 및 수정
