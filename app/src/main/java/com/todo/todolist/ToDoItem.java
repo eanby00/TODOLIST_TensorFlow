@@ -1,27 +1,27 @@
 package com.todo.todolist;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 public class ToDoItem extends LinearLayout {
 
-    TextView name, dif;
-    ImageButton btnDone, btnDelete;
+    Context c;
+    Boolean TF;
+
+    TextView name = (TextView) findViewById(R.id.name);
+    TextView dif = (TextView) findViewById(R.id.dif);
 
     public ToDoItem(Context context) {
         super(context);
+        c = context;
         init(context, null);
     }
-
     public ToDoItem(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
@@ -37,19 +37,23 @@ public class ToDoItem extends LinearLayout {
         layoutInflater.inflate(R.layout.todoitem, this);
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        name = (TextView) findViewById(R.id.name);
-        dif = (TextView) findViewById(R.id.dif);
-        btnDone = (ImageButton) findViewById(R.id.btnDone);
-        btnDelete = (ImageButton) findViewById(R.id.btnDelete);
 
-        btnDone.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("test", name.getText().toString());
-            }
-        });
+    public void setTitle(String title) {
+        name = (TextView) findViewById(R.id.name);
+        name.setText(title);
+    }
+
+    public void setDif(String d) {
+        dif = (TextView) findViewById(R.id.dif);
+        dif.setText(d);
+    }
+
+    public void setDone(String b) {
+        TF = Boolean.parseBoolean(b);
+        if (TF) {
+            name.setTextColor(Color.GREEN);
+        } else {
+            name.setTextColor(Color.BLACK);
+        }
     }
 }
