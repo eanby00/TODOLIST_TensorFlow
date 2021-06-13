@@ -4,13 +4,27 @@
     android:layout_height="match_parent">
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="할 일 이름" />
+
     <EditText
         android:id="@+id/todoName"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="할 일 이름"
+        android:text=""
         android:ems="10"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="할 일의 난이도" />
 
     <EditText
         android:id="@+id/todoDif"
@@ -18,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:ems="10"
-        android:hint="할 일의 난이도"
+        android:text="0"
         android:inputType="number" />
 
 </LinearLayout>

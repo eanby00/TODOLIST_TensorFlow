@@ -51,7 +51,6 @@
             android:layout_weight="0.5"
             android:background="#DA5050"
             android:textColor="@color/black"
-            android:text="100"
             android:textSize="15sp"
             android:gravity="right"
             android:padding="5dp"/>
@@ -92,7 +91,6 @@
             android:layout_weight="0.5"
             android:background="#6ECEDA"
             android:textColor="@color/black"
-            android:text="100"
             android:textSize="15sp"
             android:gravity="right"
             android:padding="5dp"/>
