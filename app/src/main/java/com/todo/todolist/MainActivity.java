@@ -3,6 +3,7 @@ package com.todo.todolist;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             for(String row : tempNum) {
                 if (row != null || row != "") {
                     String[] rows = row.split(",");
-                    if (rows.length == 3) {
+                    if (rows.length == 3 && Double.parseDouble(rows[1]) > 0) {
                         difArray.add(Double.parseDouble(rows[1]));
                         achArray.add(Double.parseDouble(rows[2])/ Double.parseDouble(rows[1])* 100);
                     }

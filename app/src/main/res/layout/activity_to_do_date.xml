@@ -79,7 +79,8 @@
                 android:gravity="right"
                 android:padding="5dp"/>
 
-            <View
+            <TextView
+                android:id="@+id/difDate2"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="40dp"/>
@@ -136,7 +137,8 @@
                 android:gravity="right"
                 android:padding="5dp"/>
 
-            <View
+            <TextView
+                android:id="@+id/achDate2"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="40dp"/>
