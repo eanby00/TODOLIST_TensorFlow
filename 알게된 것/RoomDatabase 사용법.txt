@@ -1,3 +1,4 @@
 출처
 공식문서: https://developer.android.com/training/data-storage/room/accessing-data?hl=ko
 자바 Room 사용 예시: https://mynamewoon.tistory.com/15
+싱글톤 적용 예시: https://todaycode.tistory.com/39
