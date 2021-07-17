@@ -14,6 +14,9 @@ public interface RoomToDoListDao {
     @Query("select * from todo_list")
     List<RoomToDoList> getAll();
 
+    @Query("select * from todo_list where date == :key")
+    List<RoomToDoList> getDate(String key);
+
     @Insert(onConflict = REPLACE)
     void insert(RoomToDoList todoList);
 

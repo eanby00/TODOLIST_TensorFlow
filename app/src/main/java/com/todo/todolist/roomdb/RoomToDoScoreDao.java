@@ -14,6 +14,9 @@ public interface RoomToDoScoreDao {
     @Query("select * from todo_score")
     List<RoomToDoScore> getAll();
 
+    @Query("select * from todo_score where date == :key")
+    List<RoomToDoScore> getDate(String key);
+
     @Insert(onConflict = REPLACE)
     void insert(RoomToDoScore todoScore);
 

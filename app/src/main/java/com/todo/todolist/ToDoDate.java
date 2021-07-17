@@ -67,11 +67,11 @@ public class ToDoDate extends AppCompatActivity {
         difEasy.setText(String.valueOf(dif));
         achLow.setText(String.valueOf(ach));
 
-        LinearLayout todoitems = (LinearLayout) findViewById(R.id.todoItems);
+//        LinearLayout todoitems = (LinearLayout) findViewById(R.id.todoItems);
 //        load();
 
 
-        List<RoomToDoList> toDoLists = listHelper.roomToDoListDao().getAll();
+        List<RoomToDoList> toDoLists = listHelper.roomToDoListDao().getDate(key);
 
 
         // 해야 할 일 목록들을 저장하기 위한 커스텀 클래스 호출 & 이미지 버튼 선언
@@ -94,7 +94,7 @@ public class ToDoDate extends AppCompatActivity {
                 items[i].setDif(String.valueOf(toDoLists.get(i).getDifficulty()));
                 items[i].setDone(String.valueOf(toDoLists.get(i).getDone()));
 
-                todoitems.addView(items[i]);
+//                todoitems.addView(items[i]);
             }
 //            if (datas.get(i).length > 3) {
 //                if (!Boolean.parseBoolean(datas.get(i)[3])) {
