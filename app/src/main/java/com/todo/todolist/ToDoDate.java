@@ -1,34 +1,28 @@
 package com.todo.todolist;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.todo.todolist.recyclerview.Adapter;
 import com.todo.todolist.roomdb.RoomToDoList;
 import com.todo.todolist.roomdb.RoomToDoListHelper;
 import com.todo.todolist.roomdb.RoomToDoScoreHelper;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 public class ToDoDate extends AppCompatActivity {
     View dialogView;
@@ -43,6 +37,8 @@ public class ToDoDate extends AppCompatActivity {
 
     RoomToDoListHelper listHelper = null;
     RoomToDoScoreHelper scoreHelper = null;
+    List<RoomToDoList> todo_items;
+    Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,81 +63,17 @@ public class ToDoDate extends AppCompatActivity {
         difEasy.setText(String.valueOf(dif));
         achLow.setText(String.valueOf(ach));
 
-//        LinearLayout todoitems = (LinearLayout) findViewById(R.id.todoItems);
-//        load();
+        // 해당 날짜의 할 일 목록을 데이터베이스로부터 불러옴
+        List<RoomToDoList> todo_list = listHelper.roomToDoListDao().getDate(key);
+        todo_items = todo_list;
 
+        // 할 일을 recycler view를 이용해서 시각화
+        adapter = new Adapter(todo_items);
+        RecyclerView recyclerView = findViewById(R.id.item_recycler);
 
-        List<RoomToDoList> toDoLists = listHelper.roomToDoListDao().getDate(key);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
-
-        // 해야 할 일 목록들을 저장하기 위한 커스텀 클래스 호출 & 이미지 버튼 선언
-        ToDoItem[] items = new ToDoItem[toDoLists.size()];
-
-        ImageButton[] doneitems = new ImageButton[toDoLists.size()];
-        ImageButton[] deleteitems = new ImageButton[toDoLists.size()];
-
-        for (int i = 0; i < toDoLists.size(); i++) {
-            items[i] = new ToDoItem(this);
-        }
-
-
-
-        // 하나의 해야 할 일 목록이 하는 일에 대해 설정
-        for (int i = 0; i < toDoLists.size(); i++) {
-            if (!toDoLists.get(i).getDeleted()) {
-                items[i] = new ToDoItem(this);
-                items[i].setTitle(toDoLists.get(i).getName());
-                items[i].setDif(String.valueOf(toDoLists.get(i).getDifficulty()));
-                items[i].setDone(String.valueOf(toDoLists.get(i).getDone()));
-
-//                todoitems.addView(items[i]);
-            }
-//            if (datas.get(i).length > 3) {
-//                if (!Boolean.parseBoolean(datas.get(i)[3])) {
-//                    items[i] = new ToDoItem(this);
-//                    items[i].setTitle(datas.get(i)[0]);
-//                    items[i].setDif(datas.get(i)[1]);
-//                    items[i].setDone(datas.get(i)[2]);
-//
-//                    doneitems[i] = (ImageButton) items[i].findViewById(R.id.btnDone);
-//                    deleteitems[i] = (ImageButton) items[i].findViewById(R.id.btnDelete);
-//
-////                    final int index = i;
-////                    // 해당 일 완료를 전환하는 이벤트 생성
-////                    doneitems[i].setOnClickListener(new View.OnClickListener() {
-////                        @Override
-////                        public void onClick(View v) {
-////                            datas.get(index)[2] = String.valueOf(!Boolean.parseBoolean(datas.get(index)[2]));
-////                            if (Boolean.parseBoolean(datas.get(index)[2])) {
-////                                achievement += Double.parseDouble(datas.get(index)[1]);
-////                            } else {
-////                                achievement -= Double.parseDouble(datas.get(index)[1]);
-////                            }
-////                            setChangeNum();
-////                            save();
-////                        }
-////                    });
-////
-////                    // 해당 일을 삭제하는 이벤트 생성
-////                    deleteitems[i].setOnClickListener(new View.OnClickListener() {
-////                        @Override
-////                        public void onClick(View v) {
-////                            datas.get(index)[3] = String.valueOf(!Boolean.parseBoolean(datas.get(index)[3]));
-////                            if (Boolean.parseBoolean(datas.get(index)[2])) {
-////                                achievement -= Double.parseDouble(datas.get(index)[1]);
-////                            }
-////                            difficulty -= Double.parseDouble(datas.get(index)[1]);
-////                            setChangeNum();
-////                            save();
-////                        }
-////                    });
-//
-//                    // 커스텀 뷰를 스크롤뷰 아래의 레이아웃에 추가
-//                    todoitems.addView(items[i]);
-//                }
-//            }
-
-        }
 
 
         // 기준 하단에 난이도와 달성률을 시각적으로 표현
@@ -154,72 +86,6 @@ public class ToDoDate extends AppCompatActivity {
 //        difDate.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, Float.parseFloat(String.valueOf(difficulty / dif))));
 //        achDate.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, Float.parseFloat(String.valueOf((achievement / difficulty * 100) / ach))));
     }
-
-    // 변화한 값들을 모두 파일에 저장
-//    public void save() {
-////        // 날짜별 ToDo List 저장
-////        try {
-////            FileOutputStream outFs = openFileOutput(key + ".txt", Context.MODE_PRIVATE);
-////            String result = "";
-////            for(String[] row : datas) {
-////                if (row != null && row.length > 3) {
-////                    result += row[0]+","+ row[1] +","+ row[2] +","+ row[3] +"\n";
-////                }
-////            }
-////            outFs.write(result.getBytes());
-////            outFs.close();
-////        } catch (IOException e) { }
-//
-//
-//        // 달성률, 난이도 저장
-//        try {
-//            FileOutputStream outFs = openFileOutput("data.txt", Context.MODE_PRIVATE);
-//            String resultNum = "";
-//            for(String[] row : numData) {
-//                if (row != null) {
-//                    // 데이터: 이름, 난이도, 달성율
-//                    resultNum += row[0]+","+ row[1] +","+ row[2] +"\n";
-//                }
-//            }
-//            outFs.write(resultNum.getBytes());
-//            outFs.close();
-//        } catch (IOException e) { }
-//
-//        refresh();
-//    }
-
-//    // 변화한 값들을 모두 파일에 저장 - 백업본
-//    public void save1() {
-//        // 날짜별 ToDo List 저장
-//        try {
-//            FileOutputStream outFs = openFileOutput(key + ".txt", Context.MODE_PRIVATE);
-//            String result = "";
-//            for(String[] row : datas) {
-//                if (row != null && row.length > 3) {
-//                    result += row[0]+","+ row[1] +","+ row[2] +","+ row[3] +"\n";
-//                }
-//            }
-//            outFs.write(result.getBytes());
-//            outFs.close();
-//        } catch (IOException e) { }
-//
-//
-//        // 달성률, 난이도 저장
-//        try {
-//            FileOutputStream outFs = openFileOutput("data.txt", Context.MODE_PRIVATE);
-//            String resultNum = "";
-//            for(String[] row : numData) {
-//                if (row != null) {
-//                    // 데이터: 이름, 난이도, 달성율
-//                    resultNum += row[0]+","+ row[1] +","+ row[2] +"\n";
-//                }
-//            }
-//            outFs.write(resultNum.getBytes());
-//            outFs.close();
-//        } catch (IOException e) { }
-//
-//        refresh();
-//    }
 
     // 난이도나 달성률이 변화하면 그것을 numData 벡터에 저장
 //    public void setChangeNum() {
@@ -316,20 +182,6 @@ public class ToDoDate extends AppCompatActivity {
 //        }
 //    }
 
-    // 새로운 변화가 있을 때 해당 화면 새로고침
-    public void refresh() {
-        try {
-            Intent intent = getIntent();
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(intent);
-            overridePendingTransition(0, 0);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     // 옵션 메뉴 관련
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -371,7 +223,9 @@ public class ToDoDate extends AppCompatActivity {
                         RoomToDoList roomToDoList = new RoomToDoList(key, dlgTitle.getText().toString(), Integer.parseInt(dlgDif.getText().toString()));
                         listHelper.roomToDoListDao().insert(roomToDoList);
 
-                        refresh();
+                        // recycler view 새로고침
+                        todo_items.add(roomToDoList);
+                        adapter.notifyDataSetChanged();
 
 //                        datas.add(new String[]{dlgTitle.getText().toString(), dlgDif.getText().toString(), "false", "false"});
 //                        difficulty += Double.parseDouble(dlgDif.getText().toString());

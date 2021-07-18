@@ -1,5 +1,6 @@
 package com.todo.todolist.roomdb;
 
+import androidx.constraintlayout.helper.widget.Flow;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,7 @@ public interface RoomToDoListDao {
     @Query("select * from todo_list")
     List<RoomToDoList> getAll();
 
-    @Query("select * from todo_list where date == :key")
+    @Query("select * from todo_list where date == :key and deleted == 0")
     List<RoomToDoList> getDate(String key);
 
     @Insert(onConflict = REPLACE)

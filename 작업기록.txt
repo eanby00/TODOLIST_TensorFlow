@@ -23,3 +23,4 @@
                 기존의 디자인 recycler view나 다른 디자인으로 변경 필요
 
 2021-07-18: 기존 get 부분의 오류 수정, recycler view에 대한 기본적인 학습
+2021-07-19: recycler view와 room 데이터베이스(RoomToDoList) 연결 시작

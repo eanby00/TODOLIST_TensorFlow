@@ -1,1 +1,3 @@
 기본적인 학습: https://bbaktaeho-95.tistory.com/73
+
+recycler view 내부의 이벤트 처리 위치: https://recipes4dev.tistory.com/168

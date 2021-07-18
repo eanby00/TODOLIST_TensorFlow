@@ -8,23 +8,8 @@
     android:layout_margin="5dp"
     tools:context=".ToDoDate">
 
-
-
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="6">-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/todoItems"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical"/>-->
-
-<!--    </ScrollView>-->
-
-
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_recycler"
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:layout_weight="4" />
