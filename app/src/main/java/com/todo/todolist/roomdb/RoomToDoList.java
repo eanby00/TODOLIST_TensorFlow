@@ -46,8 +46,16 @@ public class RoomToDoList {
         this.done = done;
     }
 
+    public void setDone() {
+        this.done = !this.done;
+    }
+
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public void setDeleted() {
+        this.deleted = !this.deleted;
     }
 
     public int getId() {return this.id; };

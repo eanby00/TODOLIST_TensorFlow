@@ -68,7 +68,7 @@ public class ToDoDate extends AppCompatActivity {
         todo_items = todo_list;
 
         // 할 일을 recycler view를 이용해서 시각화
-        adapter = new Adapter(todo_items);
+        adapter = new Adapter(todo_items, listHelper, scoreHelper);
         RecyclerView recyclerView = findViewById(R.id.item_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
