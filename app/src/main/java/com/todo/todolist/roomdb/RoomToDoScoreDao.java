@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -15,11 +16,17 @@ public interface RoomToDoScoreDao {
     List<RoomToDoScore> getAll();
 
     @Query("select * from todo_score where date == :key")
-    List<RoomToDoScore> getDate(String key);
+    RoomToDoScore getDate(String key);
 
     @Insert(onConflict = REPLACE)
     void insert(RoomToDoScore todoScore);
 
     @Delete
     void delete(RoomToDoScore todoScore);
+
+    @Query("update todo_score set difficulty = :dif where date == :key")
+    void updateDifficulty(String key, int dif);
+
+    @Query("update todo_score set achievement = :ach where date == :key")
+    void updateAchievement(String key, int ach);
 }

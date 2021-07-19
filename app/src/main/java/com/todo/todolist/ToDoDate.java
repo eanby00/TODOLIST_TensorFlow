@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.todo.todolist.recyclerview.Adapter;
 import com.todo.todolist.roomdb.RoomToDoList;
 import com.todo.todolist.roomdb.RoomToDoListHelper;
+import com.todo.todolist.roomdb.RoomToDoScore;
 import com.todo.todolist.roomdb.RoomToDoScoreHelper;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public class ToDoDate extends AppCompatActivity {
         todo_items = todo_list;
 
         // 할 일을 recycler view를 이용해서 시각화
-        adapter = new Adapter(todo_items, listHelper, scoreHelper);
+        adapter = new Adapter(todo_items, listHelper, scoreHelper, key);
         RecyclerView recyclerView = findViewById(R.id.item_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,6 +86,19 @@ public class ToDoDate extends AppCompatActivity {
 //
 //        difDate.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, Float.parseFloat(String.valueOf(difficulty / dif))));
 //        achDate.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, Float.parseFloat(String.valueOf((achievement / difficulty * 100) / ach))));
+    }
+
+    public void refresh() {
+        try {
+            Intent intent = getIntent();
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     // 난이도나 달성률이 변화하면 그것을 numData 벡터에 저장
@@ -223,9 +237,12 @@ public class ToDoDate extends AppCompatActivity {
                         RoomToDoList roomToDoList = new RoomToDoList(key, dlgTitle.getText().toString(), Integer.parseInt(dlgDif.getText().toString()));
                         listHelper.roomToDoListDao().insert(roomToDoList);
 
-                        // recycler view 새로고침
-                        todo_items.add(roomToDoList);
-                        adapter.notifyDataSetChanged();
+                        // 난이도 변경
+                        RoomToDoScore roomToDoScore = scoreHelper.roomToDoScoreDao().getDate(key);
+                        roomToDoScore.addDifficulty(Integer.parseInt(dlgDif.getText().toString()));
+                        scoreHelper.roomToDoScoreDao().insert(roomToDoScore);
+
+                        refresh();
 
 //                        datas.add(new String[]{dlgTitle.getText().toString(), dlgDif.getText().toString(), "false", "false"});
 //                        difficulty += Double.parseDouble(dlgDif.getText().toString());

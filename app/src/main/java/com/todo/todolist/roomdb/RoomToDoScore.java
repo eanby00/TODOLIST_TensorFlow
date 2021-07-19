@@ -33,9 +33,13 @@ public class RoomToDoScore {
         this.difficulty = difficulty;
     }
 
+    public void addDifficulty(int difficulty) { this.difficulty += difficulty; }
+
     public void setAchievement(int achievement) {
         this.achievement = achievement;
     }
+
+    public void addAchievement(int achievement) { this.achievement += achievement; }
 
     public int getId() {return this.id; };
 

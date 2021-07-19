@@ -3,10 +3,12 @@ package com.todo.todolist;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.todo.todolist.roomdb.RoomToDoScore;
+import com.todo.todolist.roomdb.RoomToDoScoreHelper;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -46,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("Date", key);
                 intent.putExtra("difEasy", dif_easy);
                 intent.putExtra("achLow", ach_low);
+                RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
+                RoomToDoScore todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
+                if (todo_score == null) {
+                    RoomToDoScore temp = new RoomToDoScore(key, 0, 0);
+                    scoreHelper.roomToDoScoreDao().insert(temp);
+                }
                 startActivity(intent);
             }
         });
