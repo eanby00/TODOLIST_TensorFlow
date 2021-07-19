@@ -24,3 +24,13 @@
 2021-07-18: 기존 get 부분의 오류 수정, recycler view에 대한 기본적인 학습
 2021-07-19: recycler view와 room 데이터베이스(RoomToDoList) 연결 시작
             recycler view done 기능 구현(미완성)
+
+2021-07-20: recycler view done, delete 기능 구현 & RoomToDoScore DB 관련 기능 구현
+
+
+
+----------------------------------------------------------------------------------
+해야 할 것
+마테리얼 ui 기반 디자인으로 변경 필요
+score db csv의 형태로 추출 기능 필요
+

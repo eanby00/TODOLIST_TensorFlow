@@ -101,101 +101,6 @@ public class ToDoDate extends AppCompatActivity {
         }
     }
 
-    // 난이도나 달성률이 변화하면 그것을 numData 벡터에 저장
-//    public void setChangeNum() {
-//        boolean numFlag = true;
-//        for ( String[] temp : numData) {
-//            if (temp.length == 3) {
-//                if (temp[0].equals(key)) {
-//                    temp[1] = String.valueOf(difficulty);
-//                    temp[2] = String.valueOf(achievement);
-//                    numFlag = false;
-//                }
-//            }
-//        }
-//        if (numFlag) {
-//            numData.add(new String[]{key, String.valueOf(difficulty), String.valueOf(achievement)});
-//            numFlag = false;
-//        }
-//
-//    }
-
-    // 날짜별 TODO list와 난이도, 달성률 로드, 처음 실행시 초기화 기능 포함
-//    public void load() {
-//        difficulty = 0;
-//        achievement = 0;
-//        datas = new Vector<String[]>();
-//        numData = new Vector<String[]>();
-//
-//        // 해당 날짜의 TODO LIST 로드
-//        try {
-//            FileInputStream inFs = openFileInput(key+".txt");
-//            byte[] txt = new byte[inFs.available()];
-//            inFs.read(txt);
-//            inFs.close();
-//            String str = new String(txt);
-//            Vector<String> temp = new Vector<String>(Arrays.asList(str.split("\n")));
-//            for(String row : temp) {
-//                if (row != "" || row != null) {
-//                    // 데이터: 이름, 난이도, done여부, 제거 여부
-//                    String[] rows = row.split(",");
-//                    datas.add(rows);
-//                }
-//            }
-//
-//        } catch (IOException e) {
-//            try {
-//                // 최초 실행시 파일 초기화
-//                FileOutputStream outFs = openFileOutput(key+".txt", Context.MODE_PRIVATE);
-//                String result = "";
-//                outFs.write(result.getBytes());
-//                outFs.close();
-//            } catch(IOException e2) {
-//
-//            }
-//        }
-//
-//        // 해당 날짜의 TODO LIST의 난이도와 달성률 로드
-//        try{
-//            FileInputStream inFsNum = openFileInput("data.txt");
-//            byte[] txtNum = new byte[inFsNum.available()];
-//            inFsNum.read(txtNum);
-//            inFsNum.close();
-//            String str = new String(txtNum);
-//            Vector<String> tempNum = new Vector<String>(Arrays.asList(str.split("\n")));
-//            for(String row : tempNum) {
-//                if (row != null || row != "") {
-//                    // 데이터: 이름, 난이도, 달성율
-//                    String[] rows = row.split(",");
-//                    if (rows.length == 3) {
-//                        if (rows[0].equals(key)) {
-//                            difficulty = Double.parseDouble(rows[1]);
-//                            achievement = Double.parseDouble(rows[2]);
-//                            flag = false;
-//                        }
-//                        numData.add(rows);
-//                    }
-//                }
-//            }
-//            if (flag) {
-//                numData.add(new String[]{key,String.valueOf(0.0), String.valueOf(0.0) });
-//                flag = false;
-//            }
-//
-//        } catch (IOException e) {
-//            try {
-//                // 최초 실행시 파일 초기화
-//                FileOutputStream outFs = openFileOutput("data.txt", Context.MODE_PRIVATE);
-//                String result = "";
-//                outFs.write(result.getBytes());
-//                outFs.close();
-//            } catch(IOException e2) {
-//
-//            }
-//
-//        }
-//    }
-
     // 옵션 메뉴 관련
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -243,11 +148,6 @@ public class ToDoDate extends AppCompatActivity {
                         scoreHelper.roomToDoScoreDao().insert(roomToDoScore);
 
                         refresh();
-
-//                        datas.add(new String[]{dlgTitle.getText().toString(), dlgDif.getText().toString(), "false", "false"});
-//                        difficulty += Double.parseDouble(dlgDif.getText().toString());
-//                        setChangeNum();
-//                        save();
                     }
                 });
                 dlg.show();
