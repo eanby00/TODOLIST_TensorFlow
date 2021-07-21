@@ -1,0 +1,6 @@
+폴더 경로: https://crazykim2.tistory.com/488
+deprecated된 메소드 대체 메소드 context.getExternalCacheDirs() : https://developer.android.com/reference/android/content/Context#getExternalFilesDir(java.lang.String)
+
+결합 버전
+File file = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "test.txt");
+download 폴더의 test.txt라는 위치 생성
