@@ -28,9 +28,9 @@ import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView difEasy, achLow;
-    Double dif_easy = 50.0;
-    Double ach_low = 50.0;
+//    TextView difEasy, achLow;
+//    Double dif_easy = 50.0;
+//    Double ach_low = 50.0;
 
 
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("TODO LIST (정준성)");
 
-        setDifAch();
+//        setDifAch();
 
         // 달력 구성
         HashSet<Date> events = new HashSet<Date>();
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDayPress(String key) {
                 Intent intent = new Intent(getApplicationContext(), ToDoDate.class);
                 intent.putExtra("Date", key);
-                intent.putExtra("difEasy", dif_easy);
-                intent.putExtra("achLow", ach_low);
+//                intent.putExtra("difEasy", dif_easy);
+//                intent.putExtra("achLow", ach_low);
                 RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
                 RoomToDoScore todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
                 if (todo_score == null) {
@@ -72,67 +72,67 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        setDifAch();
-    }
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        setDifAch();
+//    }
 
-    public void setDifAch() {
-        // 계획 난이도 기준 설정
-        // TODO LIST의 난이도와 달성률 로드
-        Vector <Double> difArray = new Vector<Double>();
-        Vector <Double> achArray = new Vector<Double>();
-        try{
-            FileInputStream inFsNum = openFileInput("data.txt");
-            byte[] txtNum = new byte[inFsNum.available()];
-            inFsNum.read(txtNum);
-            inFsNum.close();
-            String str = new String(txtNum);
-            Vector<String> tempNum = new Vector<String>(Arrays.asList(str.split("\n")));
-            for(String row : tempNum) {
-                if (row != null || row != "") {
-                    String[] rows = row.split(",");
-                    if (rows.length == 3 && Double.parseDouble(rows[1]) > 0) {
-                        difArray.add(Double.parseDouble(rows[1]));
-                        achArray.add(Double.parseDouble(rows[2])/ Double.parseDouble(rows[1])* 100);
-                    }
-                }
-            }
-            Double sumDif = 0.0;
-            for (Double tempDif : difArray) {
-                sumDif += tempDif;
-            }
-            dif_easy = Double.valueOf(String.format("%.2f", sumDif / difArray.size()));
-
-            Double sumAch = 0.0;
-            for (Double tempAch : achArray) {
-                sumAch += tempAch;
-            }
-            ach_low = Double.valueOf(String.format("%.2f", sumAch / achArray.size()));
-
-        } catch (IOException e) {
-            try {
-                // 최초 실행시 파일 초기화
-                FileOutputStream outFs = openFileOutput("data.txt", Context.MODE_PRIVATE);
-                String result = "";
-                outFs.write(result.getBytes());
-                outFs.close();
-            } catch(IOException e2) {
-
-            }
-
-        }
-
-        difEasy = (TextView) findViewById(R.id.difEasy);
-        difEasy.setText(Double.toString(dif_easy));
-
-
-        // 계획 달성률 기준 설정
-
-        achLow = (TextView) findViewById(R.id.achLow);
-        achLow.setText(Double.toString(ach_low));
-    }
+//    public void setDifAch() {
+//        // 계획 난이도 기준 설정
+//        // TODO LIST의 난이도와 달성률 로드
+//        Vector <Double> difArray = new Vector<Double>();
+//        Vector <Double> achArray = new Vector<Double>();
+//        try{
+//            FileInputStream inFsNum = openFileInput("data.txt");
+//            byte[] txtNum = new byte[inFsNum.available()];
+//            inFsNum.read(txtNum);
+//            inFsNum.close();
+//            String str = new String(txtNum);
+//            Vector<String> tempNum = new Vector<String>(Arrays.asList(str.split("\n")));
+//            for(String row : tempNum) {
+//                if (row != null || row != "") {
+//                    String[] rows = row.split(",");
+//                    if (rows.length == 3 && Double.parseDouble(rows[1]) > 0) {
+//                        difArray.add(Double.parseDouble(rows[1]));
+//                        achArray.add(Double.parseDouble(rows[2])/ Double.parseDouble(rows[1])* 100);
+//                    }
+//                }
+//            }
+//            Double sumDif = 0.0;
+//            for (Double tempDif : difArray) {
+//                sumDif += tempDif;
+//            }
+//            dif_easy = Double.valueOf(String.format("%.2f", sumDif / difArray.size()));
+//
+//            Double sumAch = 0.0;
+//            for (Double tempAch : achArray) {
+//                sumAch += tempAch;
+//            }
+//            ach_low = Double.valueOf(String.format("%.2f", sumAch / achArray.size()));
+//
+//        } catch (IOException e) {
+//            try {
+//                // 최초 실행시 파일 초기화
+//                FileOutputStream outFs = openFileOutput("data.txt", Context.MODE_PRIVATE);
+//                String result = "";
+//                outFs.write(result.getBytes());
+//                outFs.close();
+//            } catch(IOException e2) {
+//
+//            }
+//
+//        }
+//
+//        difEasy = (TextView) findViewById(R.id.difEasy);
+//        difEasy.setText(Double.toString(dif_easy));
+//
+//
+//        // 계획 달성률 기준 설정
+//
+//        achLow = (TextView) findViewById(R.id.achLow);
+//        achLow.setText(Double.toString(ach_low));
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

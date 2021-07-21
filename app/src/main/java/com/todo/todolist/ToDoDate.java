@@ -30,8 +30,8 @@ public class ToDoDate extends AppCompatActivity {
     String key;
 //    double difficulty;
 //    double achievement;
-    Double dif;
-    Double ach;
+//    Double dif;
+//    Double ach;
 //    Boolean flag = true;
 //    Vector<String[]> datas = new Vector<String[]>();
 //    Vector<String[]> numData = new Vector<String[]>();
@@ -49,8 +49,8 @@ public class ToDoDate extends AppCompatActivity {
         // intent로 받은 정보를 가지고 초기 화면 설정
         Intent intent = getIntent();
         key = intent.getStringExtra("Date");
-        dif = intent.getDoubleExtra("difEasy", 0.0);
-        ach = intent.getDoubleExtra("achLow", 0.0);
+//        dif = intent.getDoubleExtra("difEasy", 0.0);
+//        ach = intent.getDoubleExtra("achLow", 0.0);
 
         String[] dateInfo = key.split("_");
         setTitle(dateInfo[0]+"년 "+dateInfo[1]+"월 "+dateInfo[2]+"일의 ToDo");
@@ -59,10 +59,10 @@ public class ToDoDate extends AppCompatActivity {
         scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
 
         // 하단 기준 설정
-        TextView difEasy = (TextView) findViewById(R.id.difEasyItem);
-        TextView achLow = (TextView) findViewById(R.id.achLowItem);
-        difEasy.setText(String.valueOf(dif));
-        achLow.setText(String.valueOf(ach));
+//        TextView difEasy = (TextView) findViewById(R.id.difEasyItem);
+//        TextView achLow = (TextView) findViewById(R.id.achLowItem);
+//        difEasy.setText(String.valueOf(dif));
+//        achLow.setText(String.valueOf(ach));
 
         // 해당 날짜의 할 일 목록을 데이터베이스로부터 불러옴
         List<RoomToDoList> todo_list = listHelper.roomToDoListDao().getDate(key);
