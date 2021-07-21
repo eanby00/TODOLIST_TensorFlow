@@ -3,4 +3,5 @@ deprecated된 메소드 대체 메소드 context.getExternalCacheDirs() : https:
 
 결합 버전
 File file = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "test.txt");
-download 폴더의 test.txt라는 위치 생성
+/storage/emulated/0/Android/data/com.todo.todolist/files/Download/test.txt라는 위치 생성
+따라서 공유 폴더의 download 접근을 위해서는 다른 방식 필요
