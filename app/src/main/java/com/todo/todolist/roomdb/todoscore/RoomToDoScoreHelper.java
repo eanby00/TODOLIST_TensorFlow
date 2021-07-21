@@ -1,4 +1,4 @@
-package com.todo.todolist.roomdb;
+package com.todo.todolist.roomdb.todoscore;
 
 import android.content.Context;
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/extractData"
+        android:title="데이터 추출" />
+<!--    <item-->
+<!--        android:id="@+id/selectModel"-->
+<!--        android:title="모델 선택" />-->
+</menu>

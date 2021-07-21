@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.todo.todolist.R;
-import com.todo.todolist.roomdb.RoomToDoList;
-import com.todo.todolist.roomdb.RoomToDoListHelper;
-import com.todo.todolist.roomdb.RoomToDoScore;
-import com.todo.todolist.roomdb.RoomToDoScoreHelper;
+import com.todo.todolist.roomdb.todolist.RoomToDoList;
+import com.todo.todolist.roomdb.todolist.RoomToDoListHelper;
+import com.todo.todolist.roomdb.todoscore.RoomToDoScore;
+import com.todo.todolist.roomdb.todoscore.RoomToDoScoreHelper;
 
 import java.util.List;
 
@@ -46,6 +46,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
+        // list의 데이터를 기반으로 내부 요소 생성
         if (todo_list.get(position).getDone()) {
             holder.item_name.setTextColor(Color.GREEN);
         } else {
@@ -75,6 +76,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             item_btnDelete = itemView.findViewById(R.id.item_btnDelete);
 
             item_btnDone.setOnClickListener(new View.OnClickListener() {
+                // 완료 버튼이 클릭되었을 경우 글자색과 달성율 변경
+                // 변경된 값 데이터베이스에 반영
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
@@ -82,8 +85,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                         todo_list.get(pos).setDone();
                         int dif = todo_list.get(pos).getDifficulty();
 
-                        // 현재 Done 값을 체크해 true라면 난이도만큼 달성율 상승
-                        // false라면 난이도만틈 달성률 감소
                         if (todo_list.get(pos).getDone()) {
                             item_name.setTextColor(Color.GREEN);
                             todo_score.addAchievement(dif);
@@ -104,6 +105,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             });
 
             item_btnDelete.setOnClickListener(new View.OnClickListener() {
+                // 삭제 버튼이 클릭되었을 경우 난이도와 달성율 변경 후 삭제
+                // 변경된 값 데이터베이스에 반영
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();

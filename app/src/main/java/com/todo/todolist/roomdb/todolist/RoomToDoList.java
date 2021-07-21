@@ -1,4 +1,4 @@
-package com.todo.todolist.roomdb;
+package com.todo.todolist.roomdb.todolist;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

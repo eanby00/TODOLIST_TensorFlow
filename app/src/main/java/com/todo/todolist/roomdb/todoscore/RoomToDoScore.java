@@ -1,4 +1,4 @@
-package com.todo.todolist.roomdb;
+package com.todo.todolist.roomdb.todoscore;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -41,7 +41,7 @@ public class RoomToDoScore {
 
     public void addAchievement(int achievement) { this.achievement += achievement; }
 
-    public int getId() {return this.id; };
+    public int getId() {return this.id; }
 
     public String getDate() { return this.date; }
 

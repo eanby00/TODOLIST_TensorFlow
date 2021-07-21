@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.todo.todolist.recyclerview.Adapter;
-import com.todo.todolist.roomdb.RoomToDoList;
-import com.todo.todolist.roomdb.RoomToDoListHelper;
-import com.todo.todolist.roomdb.RoomToDoScore;
-import com.todo.todolist.roomdb.RoomToDoScoreHelper;
+import com.todo.todolist.roomdb.todolist.RoomToDoList;
+import com.todo.todolist.roomdb.todolist.RoomToDoListHelper;
+import com.todo.todolist.roomdb.todoscore.RoomToDoScore;
+import com.todo.todolist.roomdb.todoscore.RoomToDoScoreHelper;
 
 import java.util.List;
 
