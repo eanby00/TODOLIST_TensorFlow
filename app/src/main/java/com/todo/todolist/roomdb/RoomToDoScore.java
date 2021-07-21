@@ -52,4 +52,8 @@ public class RoomToDoScore {
     public int getAchievement() {
         return this.achievement;
     }
+
+    public String[] getItems() {
+        return new String[]{String.valueOf(difficulty), String.valueOf(achievement)};
+    }
 }

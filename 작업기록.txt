@@ -26,11 +26,14 @@
             recycler view done 기능 구현(미완성)
 
 2021-07-20: recycler view done, delete 기능 구현 & RoomToDoScore DB 관련 기능 구현
+2021-07-21: openCSV를 통해 데이터베이스의 내용 저장 기반 생성
+                /storage/emulated/0/Android/data/com.todo.todolist/files/Download/test.txt의 위치에 저장됨, 후에 고칠 필요성 있음
+
 
 
 
 ----------------------------------------------------------------------------------
 해야 할 것
 마테리얼 ui 기반 디자인으로 변경 필요
-score db csv의 형태로 추출 기능 필요
+score db csv의 형태로 추출 기능 필요 - mediastore나 기타 기능을 통해 공유 download 폴더를 이용하는 것이 필요할 듯?
 
