@@ -25,10 +25,14 @@ public class RoomToDoList {
     @ColumnInfo
     private Boolean deleted = false;
 
-    public RoomToDoList(String date, String name, int difficulty) {
+    @ColumnInfo
+    private String memo = "";
+
+    public RoomToDoList(String date, String name, int difficulty, String memo) {
         this.date = date;
         this.name = name;
         this.difficulty = difficulty;
+        this.memo = memo;
     }
     public void setId(int id) { this.id = id; }
 
@@ -58,6 +62,10 @@ public class RoomToDoList {
         this.deleted = !this.deleted;
     }
 
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
     public int getId() {return this.id; };
 
     public String getDate() { return this.date; }
@@ -77,4 +85,6 @@ public class RoomToDoList {
     public Boolean getDeleted() {
         return this.deleted;
     }
+
+    public String getMemo() { return this.memo; }
 }

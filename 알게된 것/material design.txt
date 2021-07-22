@@ -1,0 +1,2 @@
+text field (edit text처럼 사용): https://material.io/components/text-fields
+dialog: https://material.io/components/dialogs/android#alert-dialog

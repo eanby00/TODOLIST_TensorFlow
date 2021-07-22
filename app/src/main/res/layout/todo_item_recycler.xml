@@ -7,34 +7,41 @@
 
     <TextView
         android:id="@+id/item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="20"
+        android:layout_weight="12"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/item_difficulty"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="5"
         android:textSize="20sp"
         android:textColor="@color/black"
+        android:gravity="right"
         android:text="TextView" />
 
-    <ImageButton
-        android:id="@+id/item_btnDone"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_weight="0.5"
-        app:srcCompat="@drawable/done" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="8">
+        <ImageButton
+            android:id="@+id/item_btnDone"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.5"
+            app:srcCompat="@drawable/done" />
 
-    <ImageButton
-        android:id="@+id/item_btnDelete"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_weight="0.5"
-        app:srcCompat="@drawable/remove" />
+        <ImageButton
+            android:id="@+id/item_btnDelete"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.5"
+            app:srcCompat="@drawable/remove" />
+    </LinearLayout>
 
 </LinearLayout>
