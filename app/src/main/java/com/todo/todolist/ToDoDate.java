@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.todo.todolist.recyclerview.Adapter;
 import com.todo.todolist.roomdb.todolist.RoomToDoList;
 import com.todo.todolist.roomdb.todolist.RoomToDoListHelper;
@@ -135,8 +137,12 @@ public class ToDoDate extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText dlgTitle = (EditText) dialogView.findViewById(R.id.todoName);
                         EditText dlgDif = (EditText) dialogView.findViewById(R.id.todoDif);
+                        TextInputEditText textField = (TextInputEditText) dialogView.findViewById(R.id.edittext);
 
-                        Toast.makeText(getApplicationContext(), "생성되었습니다.", Toast.LENGTH_SHORT).show();
+
+
+
+                        Toast.makeText(getApplicationContext(), textField.getText().toString(), Toast.LENGTH_SHORT).show();
 
                         // ToDo List에 새로운 데이터 추가
                         RoomToDoList roomToDoList = new RoomToDoList(key, dlgTitle.getText().toString(), Integer.parseInt(dlgDif.getText().toString()));
