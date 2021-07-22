@@ -121,8 +121,6 @@ public class ToDoDate extends AppCompatActivity {
                         } else {
                             Toast.makeText(getApplicationContext(), "완료되었습니다", Toast.LENGTH_SHORT).show();
 
-                            Log.d("test", "onClick: \n"+dlgMemo.getText().toString());
-
                             // ToDo List에 새로운 데이터 추가
                             RoomToDoList roomToDoList = new RoomToDoList(key, dlgTitle.getText().toString(), Integer.parseInt(dlgDif.getText().toString()), dlgMemo.getText().toString());
                             listHelper.roomToDoListDao().insert(roomToDoList);
