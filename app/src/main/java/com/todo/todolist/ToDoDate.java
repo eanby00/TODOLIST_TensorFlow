@@ -96,7 +96,6 @@ public class ToDoDate extends AppCompatActivity {
             // 추가 버튼이 클릭되었을 때 화면에 출력되는 대화상자 관련 코드
             case R.id.addNewItem:
                 dialogView = (View) View.inflate(ToDoDate.this, R.layout.tododialog, null);
-//                AlertDialog.Builder dlg = new AlertDialog.Builder(ToDoDate.this);
                 MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ToDoDate.this);
                 materialAlertDialogBuilder.setTitle("ToDo 추가");
                 materialAlertDialogBuilder.setView(dialogView);
