@@ -9,9 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.todo.todolist.R;
 import com.todo.todolist.roomdb.todolist.RoomToDoList;
@@ -50,16 +52,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         // list의 데이터를 기반으로 내부 요소 생성
-        if (todo_list.get(position).getDone()) {
-            holder.item_done.setText("완료");
-
-        } else {
-            holder.item_done.setText("미완");
-        }
+        holder.card.setChecked(todo_list.get(position).getDone());
         holder.item_name.setText(todo_list.get(position).getName());
         holder.item_difficulty.setText(String.valueOf(todo_list.get(position).getDifficulty()));
         holder.item_memo.setText(todo_list.get(position).getMemo());
-
     }
 
     @Override
@@ -70,19 +66,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     class Holder extends RecyclerView.ViewHolder {
         TextView item_name;
         TextView item_difficulty;
-        TextView item_done;
         TextView item_memo;
         MaterialButton item_btnDone;
         MaterialButton item_btnDelete;
+        MaterialCardView card;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             item_name = itemView.findViewById(R.id.item_name);
             item_difficulty = itemView.findViewById(R.id.item_difficulty);
-            item_done = itemView.findViewById(R.id.item_done);
             item_memo = itemView.findViewById(R.id.item_memo);
             item_btnDone = itemView.findViewById(R.id.item_btnDone);
             item_btnDelete = itemView.findViewById(R.id.item_btnDelete);
+            card = itemView.findViewById(R.id.card);
 
             item_btnDone.setOnClickListener(new View.OnClickListener() {
                 // 완료 버튼이 클릭되었을 경우 글자색과 달성율 변경
@@ -95,11 +91,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                         int dif = todo_list.get(pos).getDifficulty();
 
                         if (todo_list.get(pos).getDone()) {
-                            item_done.setText("완료");
+                            card.setChecked(!card.isChecked());
                             todo_score.addAchievement(dif);
 
                         } else {
-                            item_done.setText("미완");
+                            card.setChecked(!card.isChecked());
                             todo_score.addAchievement(-dif);
                         }
 
