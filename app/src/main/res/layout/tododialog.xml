@@ -6,59 +6,69 @@
     android:layout_height="match_parent"
     >
 
-    <ScrollView
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                android:hint="title *"
-                android:layout_margin="5dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                android:padding="4dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/todoName"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    app:endIconMode="clear_text"
+                    android:hint="title *"
+                    android:layout_margin="5dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/todoName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                android:hint="difficulty *"
-                android:layout_margin="5dp">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/todoDif"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    app:endIconMode="clear_text"
+                    android:hint="difficulty *"
+                    android:layout_margin="5dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/todoDif"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                android:hint="memo"
-                android:layout_margin="5dp">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/todoMemo"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    app:endIconMode="clear_text"
+                    android:hint="memo"
+                    android:layout_margin="5dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/todoMemo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-    </ScrollView>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
+
 
 
 
