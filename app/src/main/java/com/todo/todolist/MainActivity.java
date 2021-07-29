@@ -4,14 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.todo.todolist.roomdb.todoscore.RoomToDoScore;
 import com.todo.todolist.roomdb.todoscore.RoomToDoScoreHelper;
 import com.todo.todolist.tool.OpenCsv;
@@ -35,33 +40,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("TODO LIST");
-
-        // 달력 구성
-        HashSet<Date> events = new HashSet<Date>();
-        events.add(new Date());
-
-        CustomCalendarView mainCal = (CustomCalendarView) findViewById(R.id.mainCal);
-        mainCal.updateCalendar(events);
-
-        mainCal.setEventHandler(new CustomCalendarView.EventHandler() {
-            @Override
-            public void onDayPress(String key) {
-                Intent intent = new Intent(getApplicationContext(), ToDoDate.class);
-                intent.putExtra("Date", key);
-//                intent.putExtra("difEasy", dif_easy);
-//                intent.putExtra("achLow", ach_low);
-                RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
-                RoomToDoScore todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
-                if (todo_score == null) {
-                    RoomToDoScore temp = new RoomToDoScore(key, 0, 0);
-                    scoreHelper.roomToDoScoreDao().insert(temp);
-                }
-                overridePendingTransition(0, 0);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
-
     }
 
     @Override
@@ -90,6 +68,38 @@ public class MainActivity extends AppCompatActivity {
                 OpenCsv.writeDataToCsv(file.getPath(), scoreHelper.roomToDoScoreDao().getAll());
 
                 return true;
+
+            case R.id.selectDate:
+                MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+                MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+                materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+                materialDatePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        String key = materialDatePicker.getHeaderText().replace("년 ", "_").replace("월 ", "_").replace("일", "");
+
+                        Intent intent = new Intent(getApplicationContext(), ToDoDate.class);
+                        intent.putExtra("Date", key);
+                        RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
+                        RoomToDoScore todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
+                        if (todo_score == null) {
+                            RoomToDoScore temp = new RoomToDoScore(key, 0, 0);
+                            scoreHelper.roomToDoScoreDao().insert(temp);
+                        }
+                        overridePendingTransition(0, 0);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+
+                    }
+                });
+
+
             default:
                 return false;
         }

@@ -4,6 +4,10 @@
     <item
         android:id="@+id/extractData"
         android:title="데이터 추출" />
+
+    <item
+        android:id="@+id/selectDate"
+        android:title="날짜 선택" />
 <!--    <item-->
 <!--        android:id="@+id/selectModel"-->
 <!--        android:title="모델 선택" />-->
