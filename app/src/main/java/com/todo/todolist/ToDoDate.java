@@ -3,24 +3,20 @@ package com.todo.todolist;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.todo.todolist.recyclerview.Adapter;
 import com.todo.todolist.roomdb.todolist.RoomToDoList;
 import com.todo.todolist.roomdb.todolist.RoomToDoListHelper;
@@ -32,6 +28,7 @@ import java.util.List;
 public class ToDoDate extends AppCompatActivity {
     View dialogView;
     String key;
+    CoordinatorLayout snack_date;
 
     RoomToDoListHelper listHelper = null;
     RoomToDoScoreHelper scoreHelper = null;
@@ -42,6 +39,8 @@ public class ToDoDate extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_date);
+
+        snack_date = findViewById(R.id.snack_date);
 
         // intent로 받은 정보를 가지고 초기 화면 설정
         Intent intent = getIntent();
@@ -103,7 +102,7 @@ public class ToDoDate extends AppCompatActivity {
                 materialAlertDialogBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(snack_date, "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
                     }
                 });
 
@@ -115,10 +114,10 @@ public class ToDoDate extends AppCompatActivity {
                         EditText dlgDif = (EditText) dialogView.findViewById(R.id.todoDif);
                         EditText dlgMemo = (EditText) dialogView.findViewById(R.id.todoMemo);
 
-                        if (dlgTitle.getText() == null || dlgDif.getText() == null) {
-                            Toast.makeText(getApplicationContext(), "필수 항목을 모두 입력하시오", Toast.LENGTH_SHORT).show();
+                        if (dlgTitle.getText().toString().equals("") || dlgDif.getText().toString().equals("")) {
+                            Snackbar.make(snack_date, "필수 항목을 모두 입력하시오.", Snackbar.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getApplicationContext(), "완료되었습니다", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(snack_date, "완료되었습니다.", Snackbar.LENGTH_SHORT).show();
 
                             // ToDo List에 새로운 데이터 추가
                             RoomToDoList roomToDoList = new RoomToDoList(key, dlgTitle.getText().toString(), Integer.parseInt(dlgDif.getText().toString()), dlgMemo.getText().toString());

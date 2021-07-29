@@ -1,35 +1,27 @@
 package com.todo.todolist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.todo.todolist.roomdb.todoscore.RoomToDoScore;
 import com.todo.todolist.roomdb.todoscore.RoomToDoScoreHelper;
 import com.todo.todolist.tool.OpenCsv;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 materialDatePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        CoordinatorLayout snack_main = findViewById(R.id.snack_main);
+                        Snackbar.make(snack_main, "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
                     }
                 });
                 materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {

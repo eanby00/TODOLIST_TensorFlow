@@ -13,4 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:layout_weight="4" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snack_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>
