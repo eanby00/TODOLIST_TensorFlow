@@ -116,6 +116,6 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle(1);
         bundle.putString("key", key);
         todoDate.setArguments(bundle);
-        transaction.replace(R.id.frame, todoDate).commit();
+        transaction.replace(R.id.frame, todoDate, "main_data").commit();
     }
 }

@@ -2,3 +2,7 @@
 
 액티비티에서 프래그먼트로 값 전달: bundle 이용 / https://5stralia.tistory.com/19
 프래그먼트 내부에서 context 구하기: https://es1015.tistory.com/124
+프래그먼트 새로고침: https://stackoverflow.com/questions/20702333/refresh-fragment-at-reload
+프래그먼트 tag 설정: https://developer.android.com/guide/fragments/fragmentmanager?hl=ko
+                fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, ExampleFragment.class, null, "tag")
