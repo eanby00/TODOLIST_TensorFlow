@@ -1,0 +1,4 @@
+기본 개념: https://50billion-dollars.tistory.com/entry/Android-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%ED%94%84%EB%9E%98%EA%B7%B8%EB%A8%BC%ED%8A%B8-Fragment-1
+
+액티비티에서 프래그먼트로 값 전달: bundle 이용 / https://5stralia.tistory.com/19
+프래그먼트 내부에서 context 구하기: https://es1015.tistory.com/124

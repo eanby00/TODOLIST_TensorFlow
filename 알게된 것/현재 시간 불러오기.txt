@@ -1,1 +1,10 @@
 출처: https://crazykim2.tistory.com/486
+
+
+또다른 버전: https://jamesdreaming.tistory.com/94
+
+Calendar calendar = Calendar.getInstance();
+int year = calendar.get(Calendar.YEAR);
+int month = calendar.get(Calendar.MONTH)+1;
+int date = calendar.get((Calendar.DATE));
+String key = year+"_"+month+"_"+date;

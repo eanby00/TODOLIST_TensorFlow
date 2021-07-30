@@ -1,8 +1,8 @@
 package com.todo.todolist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,6 +11,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -21,9 +23,13 @@ import com.todo.todolist.tool.OpenCsv;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+    FragmentManager fragmentManager;
+    com.todo.todolist.frame.ToDoDate todoDate;
+    FragmentTransaction transaction;
 
 
 
@@ -32,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("TODO LIST");
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int date = calendar.get((Calendar.DATE));
+        String key = year+"_"+month+"_"+date;
+
+        changeFragment(key);
     }
 
     @Override
@@ -77,18 +91,21 @@ public class MainActivity extends AppCompatActivity {
                     public void onPositiveButtonClick(Object selection) {
                         String key = materialDatePicker.getHeaderText().replace("년 ", "_").replace("월 ", "_").replace("일", "");
 
-                        Intent intent = new Intent(getApplicationContext(), ToDoDate.class);
-                        intent.putExtra("Date", key);
+//                        Intent intent = new Intent(getApplicationContext(), ToDoDate.class);
+//                        intent.putExtra("Date", key);
+
                         RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
                         RoomToDoScore todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
                         if (todo_score == null) {
                             RoomToDoScore temp = new RoomToDoScore(key, 0, 0);
                             scoreHelper.roomToDoScoreDao().insert(temp);
                         }
-                        overridePendingTransition(0, 0);
-                        startActivity(intent);
-                        overridePendingTransition(0, 0);
 
+//                        overridePendingTransition(0, 0);
+//                        startActivity(intent);
+//                        overridePendingTransition(0, 0);
+
+                        changeFragment(key);
                     }
                 });
 
@@ -96,5 +113,17 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return false;
         }
+    }
+
+    public void changeFragment(String key) {
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+
+        Log.d("test", "changeFragment: "+key);
+        todoDate = new com.todo.todolist.frame.ToDoDate();
+        Bundle bundle = new Bundle(1);
+        bundle.putString("key", key);
+        todoDate.setArguments(bundle);
+        transaction.replace(R.id.frame, todoDate).commit();
     }
 }
