@@ -31,13 +31,10 @@ public class MainActivity extends AppCompatActivity {
     com.todo.todolist.frame.ToDoDate todoDate;
     FragmentTransaction transaction;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("TODO LIST");
 
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -91,19 +88,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onPositiveButtonClick(Object selection) {
                         String key = materialDatePicker.getHeaderText().replace("년 ", "_").replace("월 ", "_").replace("일", "");
 
-//                        Intent intent = new Intent(getApplicationContext(), ToDoDate.class);
-//                        intent.putExtra("Date", key);
-
                         RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
                         RoomToDoScore todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
                         if (todo_score == null) {
                             RoomToDoScore temp = new RoomToDoScore(key, 0, 0);
                             scoreHelper.roomToDoScoreDao().insert(temp);
                         }
-
-//                        overridePendingTransition(0, 0);
-//                        startActivity(intent);
-//                        overridePendingTransition(0, 0);
 
                         changeFragment(key);
                     }
@@ -116,10 +106,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeFragment(String key) {
+        String[] dateInfo = key.split("_");
+        setTitle(dateInfo[0]+"년 "+dateInfo[1]+"월 "+dateInfo[2]+"일의 ToDo");
+
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
 
-        Log.d("test", "changeFragment: "+key);
         todoDate = new com.todo.todolist.frame.ToDoDate();
         Bundle bundle = new Bundle(1);
         bundle.putString("key", key);

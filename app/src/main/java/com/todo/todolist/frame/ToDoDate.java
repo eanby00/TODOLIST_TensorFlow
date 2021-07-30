@@ -42,9 +42,6 @@ public class ToDoDate extends Fragment {
         Bundle bundle = getArguments();
         key = bundle.getString("key");
 
-//        String[] dateInfo = key.split("_");
-//        setTitle(dateInfo[0]+"년 "+dateInfo[1]+"월 "+dateInfo[2]+"일의 ToDo");
-
         listHelper = RoomToDoListHelper.getInstance(container.getContext());
         scoreHelper = RoomToDoScoreHelper.getInstance(container.getContext());
 
