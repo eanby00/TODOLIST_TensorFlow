@@ -8,6 +8,7 @@
     android:layout_margin="5dp"
     tools:context=".frame.ToDoDate">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_recycler"
         android:layout_width="match_parent"

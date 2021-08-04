@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/main_menu"
             app:navigationIcon="@drawable/ic_baseline_menu_24"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             app:title="Test" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -35,4 +39,7 @@
         android:id="@+id/snack_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
-</LinearLayout>
+
+
+    <include layout="@layout/nav"/>
+</androidx.drawerlayout.widget.DrawerLayout>
