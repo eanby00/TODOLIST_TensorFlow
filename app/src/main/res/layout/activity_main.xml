@@ -28,18 +28,28 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/frame"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:tag="main_data">
+            android:orientation="vertical">
 
-        </FrameLayout>
+            <FrameLayout
+                android:id="@+id/frame"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:tag="main_data">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/snack_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            </FrameLayout>
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/snack_main"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
