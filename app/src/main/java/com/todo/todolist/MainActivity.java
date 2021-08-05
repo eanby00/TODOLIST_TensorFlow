@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -38,43 +39,54 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     ToDoDate todoDate;
     FragmentTransaction transaction;
+    CoordinatorLayout snack_main;
+
     MaterialToolbar materialToolbar;
     DrawerLayout drawerLayout;
-    NavigationView drawerView;
+    ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, materialToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        drawerView = (NavigationView) findViewById(R.id.nav);
-        drawerView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.test:
-                        drawerLayout.closeDrawer(drawerView);
-                        return true;
-
-                    default:
-                        drawerLayout.closeDrawer(drawerView);
-                        return false;
-                }
-            }
-        });
+        snack_main = findViewById(R.id.snack_main);
 
         materialToolbar = findViewById(R.id.toolBar);
         setItem();
 
-        materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_SHORT).show();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawers();
+                switch (item.getItemId()) {
+
+                    // 데이터 추출을 눌렀을 경우 현재 시간을 기준으로 csv 파일 생성
+                    // 난이도, 달성률 순으로 데이터가 이루어짐
+                    case R.id.extractData:
+                        long now = System.currentTimeMillis();
+                        Date date = new Date(now);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmm");
+                        String time = dateFormat.format(date)+".csv";
+
+                        RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
+                        File file = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), time);
+                        OpenCsv.writeDataToCsv(file.getPath(), scoreHelper.roomToDoScoreDao().getAll());
+
+                        Snackbar.make(snack_main, "파일이 생성되었습니다.", Snackbar.LENGTH_SHORT).show();
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         });
 
@@ -87,15 +99,6 @@ public class MainActivity extends AppCompatActivity {
         changeFragment(key);
     }
 
-    @Override
-    public void onBackPressed() {
-        drawerLayout = findViewById(R.id.drawer_layout);
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     public void setItem() {
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -109,20 +112,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    // 데이터 추출을 눌렀을 경우 현재 시간을 기준으로 csv 파일 생성
-                    // 난이도, 달성률 순으로 데이터가 이루어짐
-                    case R.id.extractData:
-                        long now = System.currentTimeMillis();
-                        Date date = new Date(now);
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmm");
-                        String time = dateFormat.format(date)+".csv";
-
-                        RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
-                        File file = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), time);
-                        OpenCsv.writeDataToCsv(file.getPath(), scoreHelper.roomToDoScoreDao().getAll());
-
-                        return true;
-
                     case R.id.selectDate:
                         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
                         MaterialDatePicker materialDatePicker = materialDateBuilder.build();
@@ -130,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         materialDatePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                CoordinatorLayout snack_main = findViewById(R.id.snack_main);
+                                snack_main = findViewById(R.id.snack_main);
                                 Snackbar.make(snack_main, "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
                             }
                         });
