@@ -28,7 +28,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -36,19 +36,23 @@
             <FrameLayout
                 android:id="@+id/frame"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="8"
-                android:tag="main_data">
+                android:layout_height="match_parent"
+                android:tag="main_data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             </FrameLayout>
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/snack_main"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>
