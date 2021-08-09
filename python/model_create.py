@@ -1,7 +1,7 @@
 import pandas as pd
 
 # 데이터 불러오기
-data = pd.read_csv("./202108090407.csv", header= None)
+data = pd.read_csv("./data.csv", header= None)
 
 # 데이터 중 난이도가 0인 데이터 제거
 data = data[data[0] != 0]

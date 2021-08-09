@@ -1,0 +1,6 @@
+https://ezrealdev.tistory.com/58
+
+프로젝트별로 가상환경에 따로 텐서플로우를 설치하고
+IDE에서 해당 가상환경을 기반으로 실행
+
+본 프로젝트 가상환경 위치: D:\backup\Study\pythons\todo_app
