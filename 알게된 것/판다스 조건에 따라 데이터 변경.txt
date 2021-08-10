@@ -1,0 +1,6 @@
+https://pongdangstory.tistory.com/518
+
+df.loc[(조건), "바꿀 열"] = "바꿀 값"
+
+예시
+data.loc[(data["achievement"] < data["achievement"].mean()), "level"] = "lower"
