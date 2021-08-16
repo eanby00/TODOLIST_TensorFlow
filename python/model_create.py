@@ -37,36 +37,71 @@ data.loc[(data["difficulty"] < data["difficulty"].mean()), "level_difficulty"] =
 
 # -----------------------------------------------------------------------------------------
 
-# 난이도 데이터 생성
-data_difficulty = data[["difficulty", "level_difficulty"]]
-# print(data_difficulty)
+# # 난이도 데이터 생성
+# data_difficulty = data[["difficulty", "level_difficulty"]]
+# # print(data_difficulty)
 
-# 난이도 데이터 원핫인코딩
-data_difficulty = pd.get_dummies(data_difficulty)
-# print(data_difficulty)
+# # 난이도 데이터 원핫인코딩
+# data_difficulty = pd.get_dummies(data_difficulty)
+# # print(data_difficulty)
 
-# 독립 변수, 종속 변수로 설정
-independent_difficulty = data_difficulty[["difficulty"]]
-dependent_difficulty = data_difficulty[["level_difficulty_higher", "level_difficulty_lower"]]
-# print(independent_difficulty)
-# print(dependent_difficulty)
+# # 독립 변수, 종속 변수로 설정
+# independent_difficulty = data_difficulty[["difficulty"]]
+# dependent_difficulty = data_difficulty[["level_difficulty_higher", "level_difficulty_lower"]]
+# # print(independent_difficulty)
+# # print(dependent_difficulty)
 
-# 난이도 모델 구조 생성
-X_difficulty = tf.keras.layers.Input(shape=[1])
-H_difficulty = tf.keras.layers.Dense(7, activation="swish")(X_difficulty)
-H_difficulty = tf.keras.layers.Dense(7, activation="swish")(H_difficulty)
-H_difficulty = tf.keras.layers.Dense(7, activation="swish")(H_difficulty)
-Y_difficulty = tf.keras.layers.Dense(2, activation="softmax")(H_difficulty)
-model_difficulty = tf.keras.models.Model(X_difficulty, Y_difficulty)
-model_difficulty.compile(loss="categorical_crossentropy", metrics="accuracy")
+# # 난이도 모델 구조 생성
+# X_difficulty = tf.keras.layers.Input(shape=[1])
+# H_difficulty = tf.keras.layers.Dense(2, activation="swish")(X_difficulty)
+# H_difficulty = tf.keras.layers.Dense(4, activation="swish")(H_difficulty)
+# H_difficulty = tf.keras.layers.Dense(8, activation="swish")(H_difficulty)
+# H_difficulty = tf.keras.layers.Dense(16, activation="swish")(H_difficulty)
+# H_difficulty = tf.keras.layers.Dense(8, activation="swish")(H_difficulty)
+# H_difficulty = tf.keras.layers.Dense(4, activation="swish")(H_difficulty)
+# Y_difficulty = tf.keras.layers.Dense(2, activation="softmax")(H_difficulty)
+# model_difficulty = tf.keras.models.Model(X_difficulty, Y_difficulty)
+# model_difficulty.compile(loss="categorical_crossentropy", metrics="accuracy")
 
-# 데이터로 모델 학습
-model_difficulty.fit(independent_difficulty, dependent_difficulty, epochs= 1000)
+# # 데이터로 모델 학습
+# model_difficulty.fit(independent_difficulty, dependent_difficulty, epochs= 1000)
 
-# 모델 테스트
-# temp_difficulty = float(input("테스트할 난이도를 입력하시오: "))
-print(model_difficulty.predict([77]))
-print(data_difficulty["difficulty"].mean())
+# # 모델 테스트
+# # temp_difficulty = float(input("테스트할 난이도를 입력하시오: "))
+# print(model_difficulty.predict([77]))
+# print(data_difficulty["difficulty"].mean())
+
+# --------------------------------------------------------------------------------------
 
 # 달성율 데이터 생성
-# data__achievement = data[["achievement", "level_achievement"]]
+data_achievement = data[["achievement", "level_achievement"]]
+
+# 난이도 데이터 원핫인코딩
+data_achievement = pd.get_dummies(data_achievement)
+# print(data_achievement)
+
+# 독립 변수, 종속 변수로 설정
+independent_achievement = data_achievement[["achievement"]]
+dependent_achievement = data_achievement[["level_achievement_higher", "level_achievement_lower"]]
+# print(independent_achievement)
+# print(dependent_achievement)
+
+# 달성율 모델 구조 생성
+X_achievement = tf.keras.layers.Input(shape=[1])
+H_achievement = tf.keras.layers.Dense(2, activation="swish")(X_achievement)
+H_achievement = tf.keras.layers.Dense(4, activation="swish")(H_achievement)
+H_achievement = tf.keras.layers.Dense(8, activation="swish")(H_achievement)
+H_achievement = tf.keras.layers.Dense(16, activation="swish")(H_achievement)
+H_achievement = tf.keras.layers.Dense(8, activation="swish")(H_achievement)
+H_achievement = tf.keras.layers.Dense(4, activation="swish")(H_achievement)
+Y_achievement = tf.keras.layers.Dense(2, activation="softmax")(H_achievement)
+model_achievement = tf.keras.models.Model(X_achievement, Y_achievement)
+model_achievement.compile(loss="categorical_crossentropy", metrics="accuracy")
+
+# # 데이터로 모델 학습
+model_achievement.fit(independent_achievement, dependent_achievement, epochs= 1000)
+
+# 모델 테스트
+temp_achievement = float(input("테스트할 달성율을 입력하시오: "))
+print(model_achievement.predict([temp_achievement]))
+print(data_achievement["achievement"].mean())
