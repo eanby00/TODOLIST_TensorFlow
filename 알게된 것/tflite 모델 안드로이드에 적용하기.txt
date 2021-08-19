@@ -1,0 +1,45 @@
+참고 출처
+기본적인 것들
+https://pythonkim.tistory.com/133
+https://pythonkim.tistory.com/134?category=703510
+
+shape 에러 나서 참고한 곳 - Cannot copy from a TensorFlowLite tensor (Identity) with shape [1, 4] to a Java object with shape [1, 10, 4]
+https://stackoverflow.com/questions/65072546/cannot-copy-from-a-tensorflowlite-tensor-identity-with-shape-1-4-to-a-java
+
+예시
+
+인풋 타입과 데이터 설정
+float[][] inputs = new float[][]{{100}};
+
+아웃풋 타입과 모양(shape) 설정
+float[][] resultLabel = new float[1][2]; (shape 에러 해결)
+Map<Integer, Object> outputs = new HashMap();
+outputs.put(0, resultLabel);
+
+모델 불러오고 사용
+Interpreter tflite = getTfliteInterpreter("converted_model_difficulty.tflite");
+tflite.runForMultipleInputsOutputs(inputs, outputs);
+
+결과 출력
+float[][] output_1 = (float[][]) outputs.get(0);
+Log.d("test", "onCreateView: "+output_1[0][0]+" / "+output_1[0][1]);
+
+
+
+private Interpreter getTfliteInterpreter(String modelPath) {
+    try{
+        return new Interpreter(loadModelFile((MainActivity) getActivity(), modelPath));
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
+private MappedByteBuffer loadModelFile(Activity activity, String modelPath) throws IOException {
+    AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(modelPath);
+    FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+    FileChannel fileChannel = inputStream.getChannel();
+    long startOffset = fileDescriptor.getStartOffset();
+    long declaredLength = fileDescriptor.getDeclaredLength();
+    return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+}

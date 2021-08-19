@@ -1,8 +1,10 @@
 package com.todo.todolist.frame;
 
+import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.todo.todolist.MainActivity;
 import com.todo.todolist.R;
 import com.todo.todolist.recyclerview.Adapter;
 import com.todo.todolist.roomdb.todolist.RoomToDoList;
@@ -26,7 +29,16 @@ import com.todo.todolist.roomdb.todolist.RoomToDoListHelper;
 import com.todo.todolist.roomdb.todoscore.RoomToDoScore;
 import com.todo.todolist.roomdb.todoscore.RoomToDoScoreHelper;
 
+import org.tensorflow.lite.Interpreter;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ToDoDate extends Fragment {
     View dialogView;
@@ -43,6 +55,21 @@ public class ToDoDate extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup frameView = (ViewGroup) inflater.inflate(R.layout.todo_date, container, false);
+
+        // test ---------------------------------------------------------------------------
+        float[][] inputs = new float[][]{{100}};
+
+        float[][] resultLabel = new float[1][2];
+        Map<Integer, Object> outputs = new HashMap();
+        outputs.put(0, resultLabel);
+
+        Interpreter tflite = getTfliteInterpreter("converted_model_difficulty.tflite");
+        tflite.runForMultipleInputsOutputs(inputs, outputs);
+
+        float[][] output_1 = (float[][]) outputs.get(0);
+        Log.d("test", "onCreateView: "+output_1[0][0]+" / "+output_1[0][1]);
+        // test ---------------------------------------------------------------------------
+
 
         snack_date = frameView.findViewById(R.id.snack_date);
         addNewItem = frameView.findViewById(R.id.addNewItem);
@@ -68,7 +95,7 @@ public class ToDoDate extends Fragment {
         addNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogView = (View) View.inflate(container.getContext(), R.layout.tododialog, null);
+                dialogView = View.inflate(container.getContext(), R.layout.tododialog, null);
                 MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(container.getContext());
                 materialAlertDialogBuilder.setTitle("ToDo 추가");
                 materialAlertDialogBuilder.setView(dialogView);
@@ -84,9 +111,9 @@ public class ToDoDate extends Fragment {
                 materialAlertDialogBuilder.setPositiveButton("추가", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText dlgTitle = (EditText) dialogView.findViewById(R.id.todoName);
-                        EditText dlgDif = (EditText) dialogView.findViewById(R.id.todoDif);
-                        EditText dlgMemo = (EditText) dialogView.findViewById(R.id.todoMemo);
+                        EditText dlgTitle = dialogView.findViewById(R.id.todoName);
+                        EditText dlgDif = dialogView.findViewById(R.id.todoDif);
+                        EditText dlgMemo = dialogView.findViewById(R.id.todoMemo);
 
                         if (dlgTitle.getText().toString().equals("") || dlgDif.getText().toString().equals("")) {
                             Snackbar.make(snack_date, "필수 항목을 모두 입력하시오.", Snackbar.LENGTH_SHORT).show();
@@ -121,6 +148,24 @@ public class ToDoDate extends Fragment {
         ft.detach(fragment);
         ft.attach(fragment);
         ft.commit();
+    }
+
+    private Interpreter getTfliteInterpreter(String modelPath) {
+        try{
+            return new Interpreter(loadModelFile((MainActivity) getActivity(), modelPath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private MappedByteBuffer loadModelFile(Activity activity, String modelPath) throws IOException {
+        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(modelPath);
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startOffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
 }
