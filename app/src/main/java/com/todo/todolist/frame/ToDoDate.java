@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,25 +52,12 @@ public class ToDoDate extends Fragment {
     Adapter adapter;
     FloatingActionButton addNewItem;
 
+    ViewGroup frameView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup frameView = (ViewGroup) inflater.inflate(R.layout.todo_date, container, false);
-
-        // test ---------------------------------------------------------------------------
-        float[][] inputs = new float[][]{{100}};
-
-        float[][] resultLabel = new float[1][2];
-        Map<Integer, Object> outputs = new HashMap();
-        outputs.put(0, resultLabel);
-
-        Interpreter tflite = getTfliteInterpreter("converted_model_difficulty.tflite");
-        tflite.runForMultipleInputsOutputs(inputs, outputs);
-
-        float[][] output_1 = (float[][]) outputs.get(0);
-        Log.d("test", "onCreateView: "+output_1[0][0]+" / "+output_1[0][1]);
-        // test ---------------------------------------------------------------------------
-
+        frameView = (ViewGroup) inflater.inflate(R.layout.todo_date, container, false);
 
         snack_date = frameView.findViewById(R.id.snack_date);
         addNewItem = frameView.findViewById(R.id.addNewItem);
@@ -80,6 +68,8 @@ public class ToDoDate extends Fragment {
 
         listHelper = RoomToDoListHelper.getInstance(container.getContext());
         scoreHelper = RoomToDoScoreHelper.getInstance(container.getContext());
+
+        predict(scoreHelper.roomToDoScoreDao().getDate(key));
 
         // 해당 날짜의 할 일 목록을 데이터베이스로부터 불러옴
         List<RoomToDoList> todo_list = listHelper.roomToDoListDao().getDate(key);
@@ -166,6 +156,32 @@ public class ToDoDate extends Fragment {
         long startOffset = fileDescriptor.getStartOffset();
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+    }
+
+    private void predict(RoomToDoScore date) {
+        // 난이도 변경 ---------------------------------------------------------------------------
+        Log.d("test", "predict: "+date.getDifficulty());
+        float[][] inputs = new float[][]{{date.getDifficulty()}};
+
+        float[][] resultLabel = new float[1][2];
+        Map<Integer, Object> outputs = new HashMap();
+        outputs.put(0, resultLabel);
+
+        Interpreter tflite = getTfliteInterpreter("converted_model_difficulty.tflite");
+        tflite.runForMultipleInputsOutputs(inputs, outputs);
+
+        float[][] output_1 = (float[][]) outputs.get(0);
+        TextView text_difficulty = frameView.findViewById(R.id.text_difficulty);
+        Log.d("test", "predict: "+output_1[0][0]+" "+output_1[0][1]);
+        if (output_1[0][0] > output_1[0][1]) {
+            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_1[0][0]*100)+"%의 확률로 평소보다 높습니다");
+        } else if(output_1[0][0] < output_1[0][1]) {
+            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_1[0][1]*100)+"%의 확률로 평소보다 낮습니다");
+        } else {
+            text_difficulty.setText("당일 일정의 난이도는 평소와 유사합니다.");
+        }
+
+        // 난이도 변경 ---------------------------------------------------------------------------
     }
 
 }

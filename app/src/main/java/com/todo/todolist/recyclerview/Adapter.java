@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.divider.MaterialDivider;
 import com.todo.todolist.R;
 import com.todo.todolist.roomdb.todolist.RoomToDoList;
 import com.todo.todolist.roomdb.todolist.RoomToDoListHelper;
@@ -55,7 +56,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         holder.card.setChecked(todo_list.get(position).getDone());
         holder.item_name.setText(todo_list.get(position).getName());
         holder.item_difficulty.setText(String.valueOf(todo_list.get(position).getDifficulty()));
-        holder.item_memo.setText(todo_list.get(position).getMemo());
+        if (todo_list.get(position).getMemo().equals("")) {
+            holder.item_memo.setVisibility(View.GONE);
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.item_memo.setText(todo_list.get(position).getMemo());
+        }
     }
 
     @Override
@@ -70,6 +76,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         MaterialButton item_btnDone;
         MaterialButton item_btnDelete;
         MaterialCardView card;
+        MaterialDivider divider;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +86,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             item_btnDone = itemView.findViewById(R.id.item_btnDone);
             item_btnDelete = itemView.findViewById(R.id.item_btnDelete);
             card = itemView.findViewById(R.id.card);
+            divider = itemView.findViewById(R.id.divider);
 
             item_btnDone.setOnClickListener(new View.OnClickListener() {
                 // 완료 버튼이 클릭되었을 경우 글자색과 달성율 변경
