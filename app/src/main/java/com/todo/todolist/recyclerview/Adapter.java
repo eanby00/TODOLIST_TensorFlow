@@ -9,14 +9,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.divider.MaterialDivider;
+import com.google.android.material.snackbar.Snackbar;
 import com.todo.todolist.R;
+import com.todo.todolist.frame.ToDoDate;
 import com.todo.todolist.roomdb.todolist.RoomToDoList;
 import com.todo.todolist.roomdb.todolist.RoomToDoListHelper;
 import com.todo.todolist.roomdb.todoscore.RoomToDoScore;
@@ -31,13 +32,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     RoomToDoScore todo_score;
     String key;
     Context context;
+    ToDoDate todoDate;
 
-    public Adapter(List<RoomToDoList> todo_list, RoomToDoListHelper listHelper, RoomToDoScoreHelper scoreHelper, String key) {
+    public Adapter(List<RoomToDoList> todo_list, RoomToDoListHelper listHelper, RoomToDoScoreHelper scoreHelper, String key, ToDoDate tododate) {
         this.todo_list = todo_list;
         this.listHelper = listHelper;
         this.scoreHelper = scoreHelper;
         this.key = key;
         todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
+        this.todoDate = tododate;
 
     }
 
@@ -112,6 +115,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
                         notifyDataSetChanged();
 
+                        todoDate.predict(todo_score);
                     }
 
                 }
@@ -149,6 +153,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                                 scoreHelper.roomToDoScoreDao().insert(todo_score);
                                 todo_list = listHelper.roomToDoListDao().getDate(key);
                                 notifyDataSetChanged();
+
+                                todoDate.predict(todo_score);
                             }
                         }
                     });

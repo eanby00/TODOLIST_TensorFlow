@@ -76,7 +76,7 @@ public class ToDoDate extends Fragment {
         todo_items = todo_list;
 
         // 할 일을 recycler view를 이용해서 시각화
-        adapter = new Adapter(todo_items, listHelper, scoreHelper, key);
+        adapter = new Adapter(todo_items, listHelper, scoreHelper, key, this);
         RecyclerView recyclerView = frameView.findViewById(R.id.item_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
@@ -158,30 +158,53 @@ public class ToDoDate extends Fragment {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
-    private void predict(RoomToDoScore date) {
+    public void predict(RoomToDoScore date) {
+        Log.d("test", "predict: "+date.getDifficulty()+" / "+date.getAchievement());
         // 난이도 변경 ---------------------------------------------------------------------------
-        Log.d("test", "predict: "+date.getDifficulty());
-        float[][] inputs = new float[][]{{date.getDifficulty()}};
+        Log.d("test", "predict_getDifficulty: "+date.getDifficulty());
+        float[][] inputs_difficulty = new float[][]{{date.getDifficulty()}};
 
-        float[][] resultLabel = new float[1][2];
-        Map<Integer, Object> outputs = new HashMap();
-        outputs.put(0, resultLabel);
+        float[][] resultLabel_difficulty = new float[1][2];
+        Map<Integer, Object> outputs_difficulty = new HashMap();
+        outputs_difficulty.put(0, resultLabel_difficulty);
 
-        Interpreter tflite = getTfliteInterpreter("converted_model_difficulty.tflite");
-        tflite.runForMultipleInputsOutputs(inputs, outputs);
+        Interpreter tflite_difficulty = getTfliteInterpreter("converted_model_difficulty.tflite");
+        tflite_difficulty.runForMultipleInputsOutputs(inputs_difficulty, outputs_difficulty);
 
-        float[][] output_1 = (float[][]) outputs.get(0);
+        float[][] output_difficulty = (float[][]) outputs_difficulty.get(0);
         TextView text_difficulty = frameView.findViewById(R.id.text_difficulty);
-        Log.d("test", "predict: "+output_1[0][0]+" "+output_1[0][1]);
-        if (output_1[0][0] > output_1[0][1]) {
-            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_1[0][0]*100)+"%의 확률로 평소보다 높습니다");
-        } else if(output_1[0][0] < output_1[0][1]) {
-            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_1[0][1]*100)+"%의 확률로 평소보다 낮습니다");
+
+        Log.d("test", "predict_difficulty: "+output_difficulty[0][0]+" / "+output_difficulty[0][1]);
+        if (output_difficulty[0][0] > output_difficulty[0][1]) {
+            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_difficulty[0][0]*100)+"%의 확률로 평소보다 높습니다");
+        } else if(output_difficulty[0][0] < output_difficulty[0][1]) {
+            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_difficulty[0][1]*100)+"%의 확률로 평소보다 낮습니다");
         } else {
             text_difficulty.setText("당일 일정의 난이도는 평소와 유사합니다.");
         }
 
-        // 난이도 변경 ---------------------------------------------------------------------------
+        // 달성율 변경 ---------------------------------------------------------------------------
+        Log.d("test", "predict_getAchievement: "+date.getAchievement());
+        float[][] inputs_achievement = new float[][]{{date.getAchievement()}};
+
+        float[][] resultLabel_achievement = new float[1][2];
+        Map<Integer, Object> outputs_achievement = new HashMap();
+        outputs_achievement.put(0, resultLabel_achievement);
+
+        Interpreter tflite_achievement = getTfliteInterpreter("converted_model_achievement.tflite");
+        tflite_achievement.runForMultipleInputsOutputs(inputs_achievement, outputs_achievement);
+
+        float[][] output_achievement = (float[][]) outputs_achievement.get(0);
+        TextView text_achievement = frameView.findViewById(R.id.text_achievement);
+
+        Log.d("test", "predict_achievement: "+output_achievement[0][0]+" / "+output_achievement[0][1]+"\n");
+        if (output_achievement[0][0] > output_achievement[0][1]) {
+            text_achievement.setText("당일 일정의 달성율은 "+Math.round(output_achievement[0][0]*100)+"%의 확률로 평소보다 높습니다");
+        } else if(output_achievement[0][0] < output_achievement[0][1]) {
+            text_achievement.setText("당일 일정의 달성율은 "+Math.round(output_achievement[0][1]*100)+"%의 확률로 평소보다 낮습니다");
+        } else {
+            text_achievement.setText("당일 일정의 달성율은 평소와 유사합니다.");
+        }
     }
 
 }

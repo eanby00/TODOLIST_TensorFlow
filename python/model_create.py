@@ -4,9 +4,6 @@ import tensorflow as tf
 
 # 데이터 불러오기
 data = pd.read_csv("./data.csv", header= None)
-
-# 데이터 중 난이도가 0인 데이터 제거
-data = data[data[0] != 0]
 # print(data)
 
 # 데이터 중 오류 케이스 제거
@@ -24,6 +21,7 @@ data.columns = ["difficulty", "achievement_temp"]
 # 달성율 데이터 추가
 data["achievement"] = data["achievement_temp"] / data["difficulty"]
 # print(data)
+data = data.fillna(0)
 
 # 달성율 기준 생성
 data["level_achievement"] = "higher"
@@ -33,7 +31,7 @@ data.loc[(data["achievement"] < data["achievement"].mean()), "level_achievement"
 # 난이도 기준 생성
 data["level_difficulty"] = "higher"
 data.loc[(data["difficulty"] < data["difficulty"].mean()), "level_difficulty"] = "lower"
-# print(data)
+print(data)
 
 # -----------------------------------------------------------------------------------------
 
