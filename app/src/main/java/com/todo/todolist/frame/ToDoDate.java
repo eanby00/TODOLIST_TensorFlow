@@ -1,26 +1,36 @@
 package com.todo.todolist.frame;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.internal.NavigationMenuItemView;
+import com.google.android.material.math.MathUtils;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.todo.todolist.MainActivity;
 import com.todo.todolist.R;
@@ -39,7 +49,6 @@ import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ToDoDate extends Fragment {
     View dialogView;
@@ -51,8 +60,12 @@ public class ToDoDate extends Fragment {
     List<RoomToDoList> todo_items;
     Adapter adapter;
     FloatingActionButton addNewItem;
-
+    BottomAppBar bottomAppBar;
     ViewGroup frameView;
+
+    NavigationView navigationView;
+    FrameLayout scrim;
+
 
     @Nullable
     @Override
@@ -61,6 +74,47 @@ public class ToDoDate extends Fragment {
 
         snack_date = frameView.findViewById(R.id.snack_date);
         addNewItem = frameView.findViewById(R.id.addNewItem);
+        bottomAppBar = frameView.findViewById(R.id.bottomAppBar);
+        navigationView = (NavigationView) frameView.findViewById(R.id.nav_frame);
+        scrim = (FrameLayout) frameView.findViewById(R.id.scrim);
+
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(navigationView);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    default:
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        return false;
+                }
+            }
+        });
+
+        scrim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                float baseAlpha = ResourcesCompat.getFloat(getResources(), R.dimen.material_emphasis_medium);
+
+                float offset = (slideOffset - (-1f)) / (1f - (-1f)) * (1f - 0f) + 0f;
+                int alpha = (int) MathUtils.lerp(0f, 255f, offset * baseAlpha);
+                int color = Color.argb(alpha, 0, 0, 0);
+                scrim.setBackgroundColor(color);
+            }
+        });
 
         // Bundle로 받은 정보를 가지고 초기 화면 설정
         Bundle bundle = getArguments();
@@ -68,8 +122,6 @@ public class ToDoDate extends Fragment {
 
         listHelper = RoomToDoListHelper.getInstance(container.getContext());
         scoreHelper = RoomToDoScoreHelper.getInstance(container.getContext());
-
-        predict(scoreHelper.roomToDoScoreDao().getDate(key));
 
         // 해당 날짜의 할 일 목록을 데이터베이스로부터 불러옴
         List<RoomToDoList> todo_list = listHelper.roomToDoListDao().getDate(key);
@@ -128,6 +180,27 @@ public class ToDoDate extends Fragment {
             }
         });
 
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.more:
+                        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                            predict(scoreHelper.roomToDoScoreDao().getDate(key));
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        }
+
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+
+
         return frameView;
     }
 
@@ -158,6 +231,7 @@ public class ToDoDate extends Fragment {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
+    @SuppressLint("RestrictedApi")
     public void predict(RoomToDoScore date) {
         Log.d("test", "predict: "+date.getDifficulty()+" / "+date.getAchievement());
         // 난이도 변경 ---------------------------------------------------------------------------
@@ -172,15 +246,15 @@ public class ToDoDate extends Fragment {
         tflite_difficulty.runForMultipleInputsOutputs(inputs_difficulty, outputs_difficulty);
 
         float[][] output_difficulty = (float[][]) outputs_difficulty.get(0);
-        TextView text_difficulty = frameView.findViewById(R.id.text_difficulty);
+        NavigationMenuItemView text_difficulty = frameView.findViewById(R.id.info_difficulty);
 
         Log.d("test", "predict_difficulty: "+output_difficulty[0][0]+" / "+output_difficulty[0][1]);
         if (output_difficulty[0][0] > output_difficulty[0][1]) {
-            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_difficulty[0][0]*100)+"%의 확률로 평소보다 높습니다");
+            text_difficulty.setTitle("당일 일정의 난이도는 "+Math.round(output_difficulty[0][0]*100)+"%의 확률로 평소보다 높습니다");
         } else if(output_difficulty[0][0] < output_difficulty[0][1]) {
-            text_difficulty.setText("당일 일정의 난이도는 "+Math.round(output_difficulty[0][1]*100)+"%의 확률로 평소보다 낮습니다");
+            text_difficulty.setTitle("당일 일정의 난이도는 "+Math.round(output_difficulty[0][1]*100)+"%의 확률로 평소보다 낮습니다");
         } else {
-            text_difficulty.setText("당일 일정의 난이도는 평소와 유사합니다.");
+            text_difficulty.setTitle("당일 일정의 난이도는 평소와 유사합니다.");
         }
 
         // 달성율 변경 ---------------------------------------------------------------------------
@@ -195,15 +269,15 @@ public class ToDoDate extends Fragment {
         tflite_achievement.runForMultipleInputsOutputs(inputs_achievement, outputs_achievement);
 
         float[][] output_achievement = (float[][]) outputs_achievement.get(0);
-        TextView text_achievement = frameView.findViewById(R.id.text_achievement);
+        NavigationMenuItemView text_achievement = frameView.findViewById(R.id.info_achievement);
 
         Log.d("test", "predict_achievement: "+output_achievement[0][0]+" / "+output_achievement[0][1]+"\n");
         if (output_achievement[0][0] > output_achievement[0][1]) {
-            text_achievement.setText("당일 일정의 달성율은 "+Math.round(output_achievement[0][0]*100)+"%의 확률로 평소보다 높습니다");
+            text_achievement.setTitle("당일 일정의 달성율은 "+Math.round(output_achievement[0][0]*100)+"%의 확률로 평소보다 높습니다");
         } else if(output_achievement[0][0] < output_achievement[0][1]) {
-            text_achievement.setText("당일 일정의 달성율은 "+Math.round(output_achievement[0][1]*100)+"%의 확률로 평소보다 낮습니다");
+            text_achievement.setTitle("당일 일정의 달성율은 "+Math.round(output_achievement[0][1]*100)+"%의 확률로 평소보다 낮습니다");
         } else {
-            text_achievement.setText("당일 일정의 달성율은 평소와 유사합니다.");
+            text_achievement.setTitle("당일 일정의 달성율은 평소와 유사합니다.");
         }
     }
 

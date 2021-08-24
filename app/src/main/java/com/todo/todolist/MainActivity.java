@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     ToDoDate todoDate;
     FragmentTransaction transaction;
-    CoordinatorLayout snack_main;
+    CoordinatorLayout snack_date;
 
     MaterialToolbar materialToolbar;
     DrawerLayout drawerLayout;
@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        snack_main = findViewById(R.id.snack_main);
-
         materialToolbar = findViewById(R.id.toolBar);
+        snack_date = findViewById(R.id.snack_date);
+
         setItem();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         File file = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), time);
                         OpenCsv.writeDataToCsv(file.getPath(), scoreHelper.roomToDoScoreDao().getAll());
 
-                        Snackbar.make(snack_main, "파일이 생성되었습니다.", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(snack_date, "파일이 생성되었습니다.", Snackbar.LENGTH_SHORT).show();
                         return true;
 
                     default:
@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                         materialDatePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                snack_main = findViewById(R.id.snack_main);
-                                Snackbar.make(snack_main, "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
+                                snack_date = findViewById(R.id.snack_date);
+                                Snackbar.make(snack_date, "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
                             }
                         });
                         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {

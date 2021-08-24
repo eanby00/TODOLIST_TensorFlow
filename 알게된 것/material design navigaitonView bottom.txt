@@ -1,0 +1,60 @@
+출처: https://material.io/components/navigation-drawer/android#bottom-navigation-drawer
+
+자바 코드
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(navigationView);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    default:
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        return false;
+                }
+            }
+        });
+
+        scrim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                float baseAlpha = ResourcesCompat.getFloat(getResources(), R.dimen.material_emphasis_medium);
+
+                float offset = (slideOffset - (-1f)) / (1f - (-1f)) * (1f - 0f) + 0f;
+                int alpha = (int) MathUtils.lerp(0f, 255f, offset * baseAlpha);
+                int color = Color.argb(alpha, 0, 0, 0);
+                scrim.setBackgroundColor(color);
+            }
+        });
+
+
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.more:
+                        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                            predict(scoreHelper.roomToDoScoreDao().getDate(key));
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        }
+
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });

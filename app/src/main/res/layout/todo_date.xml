@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:baselineAligned="false"
-    android:orientation="vertical"
     tools:context=".frame.ToDoDate">
 
-
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:layout_margin="5dp">
+
+        <FrameLayout
+            android:id="@+id/scrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/item_recycler"
             android:layout_width="match_parent"
-            android:layout_height="85dp"
-            android:layout_weight="4" />
+            android:layout_height="match_parent"/>
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/snack_date"
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_frame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addNewItem"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_baseline_add_24"/>
-    </LinearLayout>
-    <LinearLayout
+            app:menu="@menu/bottom_info"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:behavior_hideable="true"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snack_date"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/text_difficulty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="?android:attr/textColorSecondary"
-            android:text="TextView" />
-        <TextView
-            android:id="@+id/text_achievement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="?android:attr/textColorSecondary"
-            android:text="TextView" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:layout_anchor="@+id/addNewItem"
+        app:layout_anchorGravity="top" />
 
-</LinearLayout>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        style="@style/Widget.MaterialComponents.BottomAppBar.PrimarySurface"
+        app:menu="@menu/bottom_appbar"
+        app:hideOnScroll="true"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addNewItem"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_anchor="@id/bottomAppBar"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

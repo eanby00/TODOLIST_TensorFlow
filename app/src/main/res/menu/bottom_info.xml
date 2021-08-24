@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/info_difficulty"
+            android:title="title"/>
+
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/info_achievement"
+            android:title="title">
+        </item>
+    </group>
+    <group>
+        <item
+            android:id="@+id/dum1"
+            android:title="">
+        </item>
+    </group>
+    <group>
+        <item
+            android:id="@+id/dum2"
+            android:title="">
+        </item>
+    </group>
+
+</menu>
