@@ -79,13 +79,16 @@ public class ToDoDate extends Fragment {
         scrim = (FrameLayout) frameView.findViewById(R.id.scrim);
 
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(navigationView);
+        scrim.setVisibility(View.GONE);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     default:
+                        scrim.setVisibility(View.GONE);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         return false;
                 }
@@ -95,6 +98,7 @@ public class ToDoDate extends Fragment {
         scrim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                scrim.setVisibility(View.GONE);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
@@ -187,8 +191,10 @@ public class ToDoDate extends Fragment {
                     case R.id.more:
                         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                             predict(scoreHelper.roomToDoScoreDao().getDate(key));
+                            scrim.setVisibility(View.VISIBLE);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         } else {
+                            scrim.setVisibility(View.GONE);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         }
 
