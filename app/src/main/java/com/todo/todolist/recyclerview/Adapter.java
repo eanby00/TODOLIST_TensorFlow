@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,21 +25,21 @@ import com.todo.todolist.roomdb.todoscore.RoomToDoScoreHelper;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
-    RoomToDoListHelper listHelper = null;
-    RoomToDoScoreHelper scoreHelper = null;
+    RoomToDoListHelper list_helper = null;
+    RoomToDoScoreHelper score_helper = null;
     List<RoomToDoList> todo_list;
     RoomToDoScore todo_score;
     String key;
     Context context;
-    ToDoDate todoDate;
+    ToDoDate todo_date;
 
-    public Adapter(List<RoomToDoList> todo_list, RoomToDoListHelper listHelper, RoomToDoScoreHelper scoreHelper, String key, ToDoDate tododate) {
+    public Adapter(List<RoomToDoList> todo_list, RoomToDoListHelper list_helper, RoomToDoScoreHelper score_helper, String key, ToDoDate todo_date) {
         this.todo_list = todo_list;
-        this.listHelper = listHelper;
-        this.scoreHelper = scoreHelper;
+        this.list_helper = list_helper;
+        this.score_helper = score_helper;
         this.key = key;
-        todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
-        this.todoDate = tododate;
+        todo_score = score_helper.roomToDoScoreDao().getDate(key);
+        this.todo_date = todo_date;
 
     }
 
@@ -61,7 +60,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         holder.item_difficulty.setText(String.valueOf(todo_list.get(position).getDifficulty()));
         if (todo_list.get(position).getMemo().equals("")) {
             holder.item_memo.setVisibility(View.GONE);
-            holder.divider.setVisibility(View.GONE);
+            holder.item_divider.setVisibility(View.GONE);
         } else {
             holder.item_memo.setText(todo_list.get(position).getMemo());
         }
@@ -79,7 +78,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         MaterialButton item_btnDone;
         MaterialButton item_btnDelete;
         MaterialCardView card;
-        MaterialDivider divider;
+        MaterialDivider item_divider;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -89,7 +88,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             item_btnDone = itemView.findViewById(R.id.item_btnDone);
             item_btnDelete = itemView.findViewById(R.id.item_btnDelete);
             card = itemView.findViewById(R.id.card);
-            divider = itemView.findViewById(R.id.divider);
+            item_divider = itemView.findViewById(R.id.item_divider);
 
             item_btnDone.setOnClickListener(new View.OnClickListener() {
                 // 완료 버튼이 클릭되었을 경우 글자색과 달성율 변경
@@ -110,12 +109,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                             todo_score.addAchievement(-dif);
                         }
 
-                        listHelper.roomToDoListDao().insert(todo_list.get(pos));
-                        scoreHelper.roomToDoScoreDao().insert(todo_score);
+                        list_helper.roomToDoListDao().insert(todo_list.get(pos));
+                        score_helper.roomToDoScoreDao().insert(todo_score);
 
                         notifyDataSetChanged();
 
-                        todoDate.predict(todo_score);
+                        todo_date.predict(todo_score);
                     }
 
                 }
@@ -126,18 +125,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                 // 변경된 값 데이터베이스에 반영
                 @Override
                 public void onClick(View v) {
-                    MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
-                    materialAlertDialogBuilder.setTitle("삭제하시겠습니까?");
-                    materialAlertDialogBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    MaterialAlertDialogBuilder material_alert_dialog_builder = new MaterialAlertDialogBuilder(context);
+                    material_alert_dialog_builder.setTitle("삭제하시겠습니까?");
+                    material_alert_dialog_builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(context, "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(todo_date.getActivity().findViewById(R.id.snack_date), "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
                         }
                     });
-                    materialAlertDialogBuilder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                    material_alert_dialog_builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(context, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(todo_date.getActivity().findViewById(R.id.snack_date), "삭제되었습니다.", Snackbar.LENGTH_SHORT).show();
 
                             int pos = getAdapterPosition();
                             if (pos != RecyclerView.NO_POSITION) {
@@ -149,17 +148,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                                 }
 
 
-                                listHelper.roomToDoListDao().insert(todo_list.get(pos));
-                                scoreHelper.roomToDoScoreDao().insert(todo_score);
-                                todo_list = listHelper.roomToDoListDao().getDate(key);
+                                list_helper.roomToDoListDao().insert(todo_list.get(pos));
+                                score_helper.roomToDoScoreDao().insert(todo_score);
+                                todo_list = list_helper.roomToDoListDao().getDate(key);
                                 notifyDataSetChanged();
 
-                                todoDate.predict(todo_score);
+                                todo_date.predict(todo_score);
                             }
                         }
                     });
 
-                    materialAlertDialogBuilder.show();
+                    material_alert_dialog_builder.show();
                 }
             });
         }

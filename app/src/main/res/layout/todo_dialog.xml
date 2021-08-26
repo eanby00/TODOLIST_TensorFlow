@@ -7,7 +7,6 @@
     >
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -30,7 +29,7 @@
                     android:layout_margin="5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/todoName"
+                        android:id="@+id/dlg_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -44,7 +43,7 @@
                     android:layout_margin="5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/todoDif"
+                        android:id="@+id/dlg_difficulty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -58,7 +57,7 @@
                     android:layout_margin="5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/todoMemo"
+                        android:id="@+id/dlg_memo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

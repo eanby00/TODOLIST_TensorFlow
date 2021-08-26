@@ -51,45 +51,45 @@ import java.util.List;
 import java.util.Map;
 
 public class ToDoDate extends Fragment {
-    View dialogView;
+    View dialog_view;
     String key;
     CoordinatorLayout snack_date;
 
-    RoomToDoListHelper listHelper = null;
-    RoomToDoScoreHelper scoreHelper = null;
+    RoomToDoListHelper list_helper = null;
+    RoomToDoScoreHelper score_helper = null;
     List<RoomToDoList> todo_items;
     Adapter adapter;
-    FloatingActionButton addNewItem;
-    BottomAppBar bottomAppBar;
-    ViewGroup frameView;
+    FloatingActionButton add_new_item;
+    BottomAppBar bottom_appbar;
+    ViewGroup frame_view;
 
-    NavigationView navigationView;
+    NavigationView navigation_view;
     FrameLayout scrim;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        frameView = (ViewGroup) inflater.inflate(R.layout.todo_date, container, false);
+        frame_view = (ViewGroup) inflater.inflate(R.layout.todo_date, container, false);
 
-        snack_date = frameView.findViewById(R.id.snack_date);
-        addNewItem = frameView.findViewById(R.id.addNewItem);
-        bottomAppBar = frameView.findViewById(R.id.bottomAppBar);
-        navigationView = (NavigationView) frameView.findViewById(R.id.nav_frame);
-        scrim = (FrameLayout) frameView.findViewById(R.id.scrim);
+        snack_date = frame_view.findViewById(R.id.snack_date);
+        add_new_item = frame_view.findViewById(R.id.add_new_item);
+        bottom_appbar = frame_view.findViewById(R.id.bottom_appbar);
+        navigation_view = (NavigationView) frame_view.findViewById(R.id.nav_frame);
+        scrim = (FrameLayout) frame_view.findViewById(R.id.scrim);
 
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(navigationView);
+        BottomSheetBehavior bottom_sheet_behavior = BottomSheetBehavior.from(navigation_view);
         scrim.setVisibility(View.GONE);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottom_sheet_behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     default:
                         scrim.setVisibility(View.GONE);
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        bottom_sheet_behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         return false;
                 }
             }
@@ -99,11 +99,11 @@ public class ToDoDate extends Fragment {
             @Override
             public void onClick(View v) {
                 scrim.setVisibility(View.GONE);
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                bottom_sheet_behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
 
-        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        bottom_sheet_behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
 
@@ -111,10 +111,10 @@ public class ToDoDate extends Fragment {
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                float baseAlpha = ResourcesCompat.getFloat(getResources(), R.dimen.material_emphasis_medium);
+                float base_alpha = ResourcesCompat.getFloat(getResources(), R.dimen.material_emphasis_medium);
 
                 float offset = (slideOffset - (-1f)) / (1f - (-1f)) * (1f - 0f) + 0f;
-                int alpha = (int) MathUtils.lerp(0f, 255f, offset * baseAlpha);
+                int alpha = (int) MathUtils.lerp(0f, 255f, offset * base_alpha);
                 int color = Color.argb(alpha, 0, 0, 0);
                 scrim.setBackgroundColor(color);
             }
@@ -124,29 +124,29 @@ public class ToDoDate extends Fragment {
         Bundle bundle = getArguments();
         key = bundle.getString("key");
 
-        listHelper = RoomToDoListHelper.getInstance(container.getContext());
-        scoreHelper = RoomToDoScoreHelper.getInstance(container.getContext());
+        list_helper = RoomToDoListHelper.getInstance(container.getContext());
+        score_helper = RoomToDoScoreHelper.getInstance(container.getContext());
 
         // 해당 날짜의 할 일 목록을 데이터베이스로부터 불러옴
-        List<RoomToDoList> todo_list = listHelper.roomToDoListDao().getDate(key);
+        List<RoomToDoList> todo_list = list_helper.roomToDoListDao().getDate(key);
         todo_items = todo_list;
 
         // 할 일을 recycler view를 이용해서 시각화
-        adapter = new Adapter(todo_items, listHelper, scoreHelper, key, this);
-        RecyclerView recyclerView = frameView.findViewById(R.id.item_recycler);
+        adapter = new Adapter(todo_items, list_helper, score_helper, key, this);
+        RecyclerView recycler_view = frame_view.findViewById(R.id.item_recycler);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
-        recyclerView.setAdapter(adapter);
+        recycler_view.setLayoutManager(new LinearLayoutManager(container.getContext()));
+        recycler_view.setAdapter(adapter);
 
-        addNewItem.setOnClickListener(new View.OnClickListener() {
+        add_new_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogView = View.inflate(container.getContext(), R.layout.tododialog, null);
-                MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(container.getContext());
-                materialAlertDialogBuilder.setTitle("ToDo 추가");
-                materialAlertDialogBuilder.setView(dialogView);
+                dialog_view = View.inflate(container.getContext(), R.layout.todo_dialog, null);
+                MaterialAlertDialogBuilder material_alert_dialog_builder = new MaterialAlertDialogBuilder(container.getContext());
+                material_alert_dialog_builder.setTitle("ToDo 추가");
+                material_alert_dialog_builder.setView(dialog_view);
 
-                materialAlertDialogBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                material_alert_dialog_builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Snackbar.make(snack_date, "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
@@ -154,48 +154,48 @@ public class ToDoDate extends Fragment {
                 });
 
                 // 확인 버튼을 눌렀을 대 기존의 데이터와 추가한 데이터를 함께 저장
-                materialAlertDialogBuilder.setPositiveButton("추가", new DialogInterface.OnClickListener() {
+                material_alert_dialog_builder.setPositiveButton("추가", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText dlgTitle = dialogView.findViewById(R.id.todoName);
-                        EditText dlgDif = dialogView.findViewById(R.id.todoDif);
-                        EditText dlgMemo = dialogView.findViewById(R.id.todoMemo);
+                        EditText dlg_title = dialog_view.findViewById(R.id.dlg_title);
+                        EditText dlg_difficulty = dialog_view.findViewById(R.id.dlg_difficulty);
+                        EditText dlg_memo = dialog_view.findViewById(R.id.dlg_memo);
 
-                        if (dlgTitle.getText().toString().equals("") || dlgDif.getText().toString().equals("")) {
+                        if (dlg_title.getText().toString().equals("") || dlg_difficulty.getText().toString().equals("")) {
                             Snackbar.make(snack_date, "필수 항목을 모두 입력하시오.", Snackbar.LENGTH_SHORT).show();
                         } else {
                             Snackbar.make(snack_date, "완료되었습니다.", Snackbar.LENGTH_SHORT).show();
 
                             // ToDo List에 새로운 데이터 추가
-                            RoomToDoList roomToDoList = new RoomToDoList(key, dlgTitle.getText().toString(), Integer.parseInt(dlgDif.getText().toString()), dlgMemo.getText().toString());
-                            listHelper.roomToDoListDao().insert(roomToDoList);
+                            RoomToDoList room_todo_list = new RoomToDoList(key, dlg_title.getText().toString(), Integer.parseInt(dlg_difficulty.getText().toString()), dlg_memo.getText().toString());
+                            list_helper.roomToDoListDao().insert(room_todo_list);
 
                             // 난이도 변경
-                            RoomToDoScore roomToDoScore = scoreHelper.roomToDoScoreDao().getDate(key);
-                            roomToDoScore.addDifficulty(Integer.parseInt(dlgDif.getText().toString()));
-                            scoreHelper.roomToDoScoreDao().insert(roomToDoScore);
+                            RoomToDoScore room_todo_score = score_helper.roomToDoScoreDao().getDate(key);
+                            room_todo_score.addDifficulty(Integer.parseInt(dlg_difficulty.getText().toString()));
+                            score_helper.roomToDoScoreDao().insert(room_todo_score);
 
                             refresh();
                         }
 
                     }
                 });
-                materialAlertDialogBuilder.show();
+                material_alert_dialog_builder.show();
             }
         });
 
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        bottom_appbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.more:
-                        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-                            predict(scoreHelper.roomToDoScoreDao().getDate(key));
+                        if (bottom_sheet_behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                            predict(score_helper.roomToDoScoreDao().getDate(key));
                             scrim.setVisibility(View.VISIBLE);
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            bottom_sheet_behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         } else {
                             scrim.setVisibility(View.GONE);
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                            bottom_sheet_behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         }
 
                         return true;
@@ -207,7 +207,7 @@ public class ToDoDate extends Fragment {
 
 
 
-        return frameView;
+        return frame_view;
     }
 
     public void refresh() {
@@ -219,29 +219,29 @@ public class ToDoDate extends Fragment {
         ft.commit();
     }
 
-    private Interpreter getTfliteInterpreter(String modelPath) {
+    private Interpreter getTfliteInterpreter(String model_path) {
         try{
-            return new Interpreter(loadModelFile((MainActivity) getActivity(), modelPath));
+            return new Interpreter(loadModelFile((MainActivity) getActivity(), model_path));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private MappedByteBuffer loadModelFile(Activity activity, String modelPath) throws IOException {
-        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(modelPath);
-        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
-        FileChannel fileChannel = inputStream.getChannel();
-        long startOffset = fileDescriptor.getStartOffset();
-        long declaredLength = fileDescriptor.getDeclaredLength();
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+    private MappedByteBuffer loadModelFile(Activity activity, String model_path) throws IOException {
+        AssetFileDescriptor file_descriptor = activity.getAssets().openFd(model_path);
+        FileInputStream input_stream = new FileInputStream(file_descriptor.getFileDescriptor());
+        FileChannel file_channel = input_stream.getChannel();
+        long start_offset = file_descriptor.getStartOffset();
+        long declared_length = file_descriptor.getDeclaredLength();
+        return file_channel.map(FileChannel.MapMode.READ_ONLY, start_offset, declared_length);
     }
 
     @SuppressLint("RestrictedApi")
     public void predict(RoomToDoScore date) {
-        Log.d("test", "predict: "+date.getDifficulty()+" / "+date.getAchievement());
+//        Log.d("test", "predict: "+date.getDifficulty()+" / "+date.getAchievement());
         // 난이도 변경 ---------------------------------------------------------------------------
-        Log.d("test", "predict_getDifficulty: "+date.getDifficulty());
+//        Log.d("test", "predict_getDifficulty: "+date.getDifficulty());
         float[][] inputs_difficulty = new float[][]{{date.getDifficulty()}};
 
         float[][] resultLabel_difficulty = new float[1][2];
@@ -252,9 +252,9 @@ public class ToDoDate extends Fragment {
         tflite_difficulty.runForMultipleInputsOutputs(inputs_difficulty, outputs_difficulty);
 
         float[][] output_difficulty = (float[][]) outputs_difficulty.get(0);
-        NavigationMenuItemView text_difficulty = frameView.findViewById(R.id.info_difficulty);
+        NavigationMenuItemView text_difficulty = frame_view.findViewById(R.id.info_difficulty);
 
-        Log.d("test", "predict_difficulty: "+output_difficulty[0][0]+" / "+output_difficulty[0][1]);
+//        Log.d("test", "predict_difficulty: "+output_difficulty[0][0]+" / "+output_difficulty[0][1]);
         if (output_difficulty[0][0] > output_difficulty[0][1]) {
             text_difficulty.setTitle("당일 일정의 난이도는 "+Math.round(output_difficulty[0][0]*100)+"%의 확률로 평소보다 높습니다");
         } else if(output_difficulty[0][0] < output_difficulty[0][1]) {
@@ -264,7 +264,7 @@ public class ToDoDate extends Fragment {
         }
 
         // 달성율 변경 ---------------------------------------------------------------------------
-        Log.d("test", "predict_getAchievement: "+date.getAchievement());
+//        Log.d("test", "predict_getAchievement: "+date.getAchievement());
         float[][] inputs_achievement = new float[][]{{date.getAchievement()}};
 
         float[][] resultLabel_achievement = new float[1][2];
@@ -275,9 +275,9 @@ public class ToDoDate extends Fragment {
         tflite_achievement.runForMultipleInputsOutputs(inputs_achievement, outputs_achievement);
 
         float[][] output_achievement = (float[][]) outputs_achievement.get(0);
-        NavigationMenuItemView text_achievement = frameView.findViewById(R.id.info_achievement);
+        NavigationMenuItemView text_achievement = frame_view.findViewById(R.id.info_achievement);
 
-        Log.d("test", "predict_achievement: "+output_achievement[0][0]+" / "+output_achievement[0][1]+"\n");
+//        Log.d("test", "predict_achievement: "+output_achievement[0][0]+" / "+output_achievement[0][1]+"\n");
         if (output_achievement[0][0] > output_achievement[0][1]) {
             text_achievement.setTitle("당일 일정의 달성율은 "+Math.round(output_achievement[0][0]*100)+"%의 확률로 평소보다 높습니다");
         } else if(output_achievement[0][0] < output_achievement[0][1]) {

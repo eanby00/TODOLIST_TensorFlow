@@ -2,15 +2,10 @@ package com.todo.todolist;
 
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -36,37 +31,37 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    FragmentManager fragmentManager;
+    FragmentManager fragment_manager;
     ToDoDate todoDate;
     FragmentTransaction transaction;
     CoordinatorLayout snack_date;
 
-    MaterialToolbar materialToolbar;
-    DrawerLayout drawerLayout;
+    MaterialToolbar material_toolbar;
+    DrawerLayout drawer_layout;
     ActionBarDrawerToggle toggle;
-    NavigationView navigationView;
+    NavigationView navigation_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        materialToolbar = findViewById(R.id.toolBar);
+        material_toolbar = findViewById(R.id.tool_bar);
         snack_date = findViewById(R.id.snack_date);
 
         setItem();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
+        toggle = new ActionBarDrawerToggle(this, drawer_layout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer_layout.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigation_view = (NavigationView) findViewById(R.id.nav);
+        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                drawerLayout.closeDrawers();
+                drawer_layout.closeDrawers();
                 switch (item.getItemId()) {
 
                     // 데이터 추출을 눌렀을 경우 현재 시간을 기준으로 csv 파일 생성
@@ -74,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.extractData:
                         long now = System.currentTimeMillis();
                         Date date = new Date(now);
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmm");
-                        String time = dateFormat.format(date)+".csv";
+                        SimpleDateFormat date_format = new SimpleDateFormat("yyyyMMddhhmm");
+                        String time = date_format.format(date)+".csv";
 
-                        RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
+                        RoomToDoScoreHelper score_helper = RoomToDoScoreHelper.getInstance(getApplicationContext());
                         File file = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), time);
-                        OpenCsv.writeDataToCsv(file.getPath(), scoreHelper.roomToDoScoreDao().getAll());
+                        OpenCsv.writeDataToCsv(file.getPath(), score_helper.roomToDoScoreDao().getAll());
 
                         Snackbar.make(snack_date, "파일이 생성되었습니다.", Snackbar.LENGTH_SHORT).show();
                         return true;
@@ -101,32 +96,32 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setItem() {
-        materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        material_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
+                drawer_layout.openDrawer(GravityCompat.START);
             }
         });
 
-        materialToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        material_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.selectDate:
-                        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
-                        MaterialDatePicker materialDatePicker = materialDateBuilder.build();
-                        materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
-                        materialDatePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
+                        MaterialDatePicker.Builder material_date_builder = MaterialDatePicker.Builder.datePicker();
+                        MaterialDatePicker material_date_picker = material_date_builder.build();
+                        material_date_picker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+                        material_date_picker.addOnNegativeButtonClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 snack_date = findViewById(R.id.snack_date);
                                 Snackbar.make(snack_date, "취소되었습니다.", Snackbar.LENGTH_SHORT).show();
                             }
                         });
-                        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                        material_date_picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                             @Override
                             public void onPositiveButtonClick(Object selection) {
-                                String key = materialDatePicker.getHeaderText().replace("년 ", "_").replace("월 ", "_").replace("일", "");
+                                String key = material_date_picker.getHeaderText().replace("년 ", "_").replace("월 ", "_").replace("일", "");
 
                                 changeFragment(key);
                             }
@@ -141,17 +136,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFragment(String key) {
         String[] dateInfo = key.split("_");
-        materialToolbar.setTitle(dateInfo[0]+"년 "+dateInfo[1]+"월 "+dateInfo[2]+"일의 ToDo");
+        material_toolbar.setTitle(dateInfo[0]+"년 "+dateInfo[1]+"월 "+dateInfo[2]+"일의 ToDo");
 
-        RoomToDoScoreHelper scoreHelper = RoomToDoScoreHelper.getInstance(getApplicationContext());
-        RoomToDoScore todo_score = scoreHelper.roomToDoScoreDao().getDate(key);
+        RoomToDoScoreHelper score_helper = RoomToDoScoreHelper.getInstance(getApplicationContext());
+        RoomToDoScore todo_score = score_helper.roomToDoScoreDao().getDate(key);
         if (todo_score == null) {
             RoomToDoScore temp = new RoomToDoScore(key, 0, 0);
-            scoreHelper.roomToDoScoreDao().insert(temp);
+            score_helper.roomToDoScoreDao().insert(temp);
         }
 
-        fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
+        fragment_manager = getSupportFragmentManager();
+        transaction = fragment_manager.beginTransaction();
 
         todoDate = new ToDoDate();
         Bundle bundle = new Bundle(1);

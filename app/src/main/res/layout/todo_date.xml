@@ -40,11 +40,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="?attr/actionBarSize"
-        app:layout_anchor="@+id/addNewItem"
+        app:layout_anchor="@+id/add_new_item"
         app:layout_anchorGravity="top" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+        android:id="@+id/bottom_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -53,10 +53,10 @@
         app:hideOnScroll="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNewItem"
+        android:id="@+id/add_new_item"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:src="@drawable/ic_baseline_add_24"
-        app:layout_anchor="@id/bottomAppBar"/>
+        app:layout_anchor="@id/bottom_appbar"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
