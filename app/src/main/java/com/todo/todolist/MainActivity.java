@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         material_toolbar = findViewById(R.id.tool_bar);
-        snack_date = findViewById(R.id.snack_date);
 
         setItem();
 
@@ -76,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         File file = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), time);
                         OpenCsv.writeDataToCsv(file.getPath(), score_helper.roomToDoScoreDao().getAll());
 
+                        snack_date = findViewById(R.id.snack_date);
                         Snackbar.make(snack_date, "파일이 생성되었습니다.", Snackbar.LENGTH_SHORT).show();
                         return true;
 

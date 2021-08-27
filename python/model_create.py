@@ -9,7 +9,7 @@ data = pd.read_csv("./data.csv", header= None)
 # 데이터 중 오류 케이스 제거
 data = data[data[0] >= data[1]]
 data = data[data[0] != 0]
-print(data)
+# print(data)
 
 # 데이터프레임 타입 변환
 data = data.astype("float")
